@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    let obj = {
+        a:'A',
+        b:'B',
+        c:'C'
+    }
+
+    obj = JSON.stringify(obj)
+
+    sessionStorage.setItem('obj',obj) //storage只能存储字符串的数据
+
+    let getObj = sessionStorage.getItem('obj')
+    getObj = JSON.parse(getObj)
+    console.log(getObj,'1')
+    getObj = JSON.parse(getObj)//报错
+    console.log(JSON.parse(getObj),'2')
+</script>
+</body>
+</html>

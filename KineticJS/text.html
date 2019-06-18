@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+    <script src="kinetic-v5.1.0.min.js"></script>
+</head>
+<body>
+<div id="container"></div>
+<script>
+    window.onload = function () {
+        var stage = new Kinetic.Stage({
+            container: 'container',
+            width: 578, height: 200
+        });
+        var layer = new Kinetic.Layer();
+
+        var text = new Kinetic.Text({
+            x: 0,
+            y: 0,
+            width: stage.width()/2,
+            height: stage.height()/2,
+            fill: 'red',
+            text: 'aaaaa',
+            lineHeight: 60,
+            align: 'center',
+            centerOffset : [10,20]
+        });
+
+        layer.add(text);
+        stage.add(layer);
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="kinetic-v5.1.0.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-mousewheel/3.1.13/jquery.mousewheel.js"></script>
+    <style>
+        #draw_div{
+            width: 100%;
+            height: 1080px;
+        }
+    </style>
+</head>
+<body>
+<div class="dcview" id="draw_div"></div>
+<script>
+    window.onload = function () {
+        let clientW = $('.dcview').width(),
+            clientH = $('.dcview').height(),
+            scale= clientW/1920;
+
+        //创建舞台
+        var stage = new Kinetic.Stage({
+            container : 'draw_div',
+            width : clientW,
+            height : clientH,
+            draggable : true,
+            // dragBounds: {
+            //     top: 300
+            // }
+        });
+        //创建层
+        var layer = new Kinetic.Layer();
+
+        //创建背景图片
+        var imageObj = new Image();
+        imageObj.src = './bgpic15.svg';
+        imageObj.onload = function() {
+            let image = new Kinetic.Image({
+                    x : 0,
+                    y : 0,
+                    image : imageObj,
+                    width : 1920,
+                    height : 1080,
+                    setZIndex : 1,
+                });
+            layer.add(image).draw();
+        };
+
+        stage.add(layer);
+
+        //按照分辨率缩放
+        // console.log(clientW)
+        let width = stage.getWidth(),
+            height = stage.getHeight();
+        stage.move({
+            x: width/2,
+            y: height/2
+        }).setScale({
+            x: scale,
+            y: scale
+        }).setOffset({
+            x: width/2,
+            y: height/2
+        })
+
+        // stage.move({
+        //     x:0,
+        //     y: 0
+        // }).setScale({
+        //     x: scale,
+        //     y: scale
+        // }).setOffset({
+        //     x: 0,
+        //     y: 0
+        // })
+        layer.batchDraw();
+
+        console.log(stage,'stage init')
+
+        $(window).resize(function () {
+            // alert('aaaa')
+
+            clientW = $('.dcview').width();
+            $('.dcview>div>canvas').width(clientW);
+            scale = clientW/1920;
+
+            // stage.setScale({
+            //     x : scale,
+            //     y : scale
+            // }).offset({
+            //     x : 0,
+            //     y : 0
+            // });
+            //
+            // /*消除拖拽效果*/
+            // stage.x(0);
+            // stage.y(0);
+
+            stage.setScale({
+                x: scale,
+                y: scale
+            })
+            layer.batchDraw();
+        })
+
+        //页面放大和缩小
+        var level = scale;//放大的倍数
+        var Rollercount = 0;//滚轮第几次使用
+        //滚轮
+        $('body').mousewheel(
+            function(event, delta) {
+
+                console.log(event,delta)
+                let scroolX = event.pageX,
+                    scroolY = event.pageY;
+
+                if (delta > 0) {
+                    level = level + 0.5;
+                    if(level){
+                        // level = 3;
+
+                        stage.setScale({
+                            x: level,
+                            y: level
+                        })
+                    }
+
+                    Rollercount++
+                } else {
+                    if(level <= scale){
+                        stage.x(0).y(0).setScale({
+                            x: scale,
+                            y: scale
+                        }).setOffset({
+                            x: 0,
+                            y: 0
+                        })
+                        stage.move({
+                            x: width/2,
+                            y: height/2
+                        }).setScale({
+                            x: scale,
+                            y: scale
+                        }).setOffset({
+                            x: width/2,
+                            y: height/2
+                        })
+
+                    }
+
+                    if(level > scale){
+                        level = level - 0.5;
+                        stage.setScale({
+                            x: level,
+                            y: level
+                        })
+                    }
+
+                }
+                layer.batchDraw();
+                return false;
+            }
+        );
+
+        //拖拽事件
+        let dragStatus = false,
+            timer = null;
+        stage.on("dragstart", function (evt) {
+            // 响应代码
+            dragStatus = true;
+            console.log('dragstart',evt)
+        })
+
+        stage.on("dragmove", function (evt) {
+            // 响应代码
+            console.log('dragmove',evt)
+
+            // stage.off("dragstart")
+
+            if(dragStatus){
+                if(timer){
+                    clearTimeout(timer)
+                }
+                timer = setTimeout(() => {
+                    stage.on("dragstart")
+                },16)
+            }
+        })
+
+        stage.on("dragend", function (evt) {
+            // 响应代码
+            dragStatus = false;
+            stage.off("dragstart")
+            console.log('dragend',evt)
+        })
+    };
+</script>
+</body>
+</html>

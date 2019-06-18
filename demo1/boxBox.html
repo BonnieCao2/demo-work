@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Title</title>
+<script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+<style>
+    *{
+        padding:0;
+        margin:0;
+    }
+    #bottom{
+        position:absolute;
+        bottom:0px;
+        width:100%;
+        height:40px;
+        border:1px solid #000;
+        background:pink;
+        color:#fff;
+    }
+    .tempDiv{
+        border:1px dashed blue;
+        background:#5a72f8;
+        position:absolute;
+        width:0;
+        height:0;
+        filter:alpha(opacity:10);
+        opacity:0.1
+    }
+    #wrap{
+        width: 100%;
+        height: 1080px;
+    }
+</style>
+<script type = "text/javascript">
+    <!--原生的document包含滚动条，$(document)不包含滚动条 原生点击也会生成tempDiv，推荐用jq写-->
+    /*原生1*/
+    /*window.onload = function(){
+        var stateBar = document.getElementById("bottom");
+        document.onmousedown = function(e){
+            var posx = e.clientX;
+            var posy = e.clientY;
+            var div = document.createElement("div");
+            div.className = "tempDiv";
+            div.style.left = e.clientX+"px";
+            div.style.top = e.clientY+"px";
+            document.body.appendChild(div);
+            document.onmousemove = function(ev){
+                div.style.left = Math.min(ev.clientX, posx) + "px";
+                div.style.top = Math.min(ev.clientY, posy) + "px";
+                div.style.width = Math.abs(posx - ev.clientX)+"px";
+                div.style.height = Math.abs(posy - ev.clientY)+"px";
+                stateBar.innerHTML = "MouseX: " + ev.clientX + "<br/>MouseY: " + ev.clientY;
+                document.onmouseup = function(){
+                    div.parentNode.removeChild(div);
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                }
+            }
+        }
+
+
+        $('#bottom').click(function () {
+            /!*不可以*!/
+            // $(document).off('mousemove')
+            // $(document).off('mouseup')
+
+            /!*不可以且会报错*!/
+            // document.removeEventListener('mousemove')
+            // document.removeEventListener('mouseup')
+
+            /!*可以*!/
+            document.onmousemove = null;
+            document.onmouseup = null;
+
+            console.log('click!')
+        })
+    }*/
+
+    /*原生2 removeEventListener不能是匿名函数*/
+    /*window.onload = function () {
+        var stateBar = document.getElementById("bottom");
+        var posx,posy,div;
+        document.addEventListener('mousedown',md)
+        function md(e) {
+            posx = e.clientX;
+            posy = e.clientY;
+            div = document.createElement("div");
+            div.className = "tempDiv";
+            div.style.left = e.clientX+"px";
+            div.style.top = e.clientY+"px";
+            document.body.appendChild(div);
+            document.addEventListener('mousemove',mm)
+
+        }
+
+        function mm(ev) {
+            div.style.left = Math.min(ev.clientX, posx) + "px";
+            div.style.top = Math.min(ev.clientY, posy) + "px";
+            div.style.width = Math.abs(posx - ev.clientX)+"px";
+            div.style.height = Math.abs(posy - ev.clientY)+"px";
+            stateBar.innerHTML = "MouseX: " + ev.clientX + "<br/>MouseY: " + ev.clientY;
+
+            document.addEventListener('mouseup',mu)
+        }
+
+        function mu() {
+                div.parentNode.removeChild(div);
+                document.removeEventListener('mousemove',mm);
+                document.removeEventListener('mouseup',mu);
+        }
+
+        /!*$('#bottom').click(function () {
+            /!*不可以*!/
+            // $(document).off('mousemove')
+            // $(document).off('mouseup')
+
+            /!*不可以*!/
+            // document.onmousemove = null;
+            // document.onmouseup = null;
+
+            /!*不可以且会报错*!/
+            // document.removeEventListener('mousemove')
+            // document.removeEventListener('mouseup')
+
+            /!*可以*!/
+            document.removeEventListener('mousemove',mm);
+            document.removeEventListener('mouseup',mu);
+
+            console.log('click!')
+        })*!/
+
+        document.querySelector('#bottom').onclick = function () {
+            document.removeEventListener('mousemove',mm);
+            document.removeEventListener('mouseup',mu);
+
+            console.log('click!')
+        }
+    }*/
+
+
+
+    /*jq推荐*/
+    $(function () {
+        // var stateBar = document.getElementById("bottom");
+        // $(document).mousedown(function (e) {
+        //     var posx = e.clientX;
+        //     var posy = e.clientY;
+        //     var div = document.createElement("div");
+        //     div.className = "tempDiv";
+        //     div.style.left = e.clientX+"px";
+        //     div.style.top = e.clientY+"px";
+        //     document.body.appendChild(div);
+        //     $(document).mousemove(function (ev) {
+        //         div.style.left = Math.min(ev.clientX, posx) + "px";
+        //         div.style.top = Math.min(ev.clientY, posy) + "px";
+        //         div.style.width = Math.abs(posx - ev.clientX)+"px";
+        //         div.style.height = Math.abs(posy - ev.clientY)+"px";
+        //         stateBar.innerHTML = "MouseX: " + ev.clientX + "<br/>MouseY: " + ev.clientY;
+        //     })
+        //     $(document).mouseup(function () {
+        //         div.parentNode.removeChild(div);
+        //         $(document).off('mousemove')
+        //         $(document).off('mouseup')
+        //     })
+        // })
+        // $('#bottom').click(function () {
+        //     $(document).off('mousemove')
+        //     $(document).off('mouseup')
+        //     console.log('click!')
+        // })
+
+        var stateBar = document.getElementById("bottom");
+        $('#wrap').mousedown(function (e) {
+            var posx = e.clientX;
+            var posy = e.clientY;
+            var div = document.createElement("div");
+            div.className = "tempDiv";
+            div.style.left = e.clientX+"px";
+            div.style.top = e.clientY+"px";
+            document.body.appendChild(div);
+            $('#wrap').mousemove(function (ev) {
+                div.style.left = Math.min(ev.clientX, posx) + "px";
+                div.style.top = Math.min(ev.clientY, posy) + "px";
+                div.style.width = Math.abs(posx - ev.clientX)+"px";
+                div.style.height = Math.abs(posy - ev.clientY)+"px";
+                stateBar.innerHTML = "MouseX: " + ev.clientX + "<br/>MouseY: " + ev.clientY;
+            })
+            $('#wrap').mouseup(function () {
+                div.parentNode.removeChild(div);
+                $('#wrap').off('mousemove')
+                $('#wrap').off('mouseup')
+            })
+        })
+        $('#bottom').click(function () {
+            console.log('click!')
+        })
+
+
+    })
+
+
+</script>
+</head>
+<body>
+<div id="wrap"></div>
+<div id = "bottom"></div>
+</body>
+</html>

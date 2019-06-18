@@ -1,0 +1,131 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>JSON格式化工具-jq22.com</title>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<style>
+button,[type="color"] {
+	height:30px;
+	border-radius:4px;
+	width:100px;
+}
+[type="color"] {
+	position:relative;
+	bottom:1px;
+}
+.toolBar {
+	box-shadow:0 0 2px #afa0a0,0 0 4px #c79797;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	padding:5px;
+	background:#fff5f5;
+}
+button {
+	cursor:pointer;
+}
+body .container {
+	width:100%;
+	height:100%;
+	overflow:auto;
+	box-shadow:0 2px 2px #afa0a0,0 2px 4px #c79797;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	padding:5px;
+	border:none;
+	resize:none;
+	outline:pink;
+	color:#74a6d0;
+}
+pre {
+	font-size:14;
+	color:#44ab98;
+	margin:0;
+	position:relative;
+	top:-1;
+}
+body {
+	margin:10px auto;
+	width:1280px;
+	height:600px;
+}
+body #error_info {
+	width:400px;
+	height:100px;
+	position:fixed;
+	left:40%;
+	top:45;
+	display:none;
+	box-shadow:0 1px 1px #CDCDCD;
+	border-radius:5px;
+	background:#fbbeb540;
+	color:#ffb4b4;
+	text-shadow:0 1px 1px #000;
+	padding:5px;
+}
+</style>
+</head>
+<body>
+<div class="toolBar">
+    <button>格式化</button>
+    背景色<input type="color" value="#ffffff">
+</div>
+<pre><textarea id="source" class="container"></textarea></pre>
+<div id="error_info"></div>
+
+<script>
+$(() => {
+    var null_val = "请输入要格式化的JSON数据！";
+    var format = "JSON:格式化错误！";
+
+    $("button").click(() => {
+        var source = $("#source").val();
+        if (source === "") {
+            notify(null_val);
+            return;
+        }
+        try {
+            var target = JSON.stringify(JSON.parse(source), null, 2);
+        } catch (err) {
+            notify(format + err);
+            return;
+        }
+        $("#source").val(target);
+    });
+
+    $("#source").focus();
+    $("#source").keyup(() => {
+        $("#source").attr("placeholder", null_val);
+    });
+    $("[type='color']").change(function() {
+        var col = $(this).val();
+        localStorage.setItem("bgc", col);
+        $("#source").css({
+            "background": col
+        });
+    });
+    initColor();
+})
+
+function initColor() {
+    //设置背景颜色
+    var color = localStorage.getItem("bgc");
+    if (color != null) {
+        $("#source").css({
+            "background": color
+        });
+        $("[type='color']").val(color);
+    }
+}
+
+function notify(msg) {
+    $("#error_info").slideDown(200);
+    $("#error_info").text(msg);
+    setTimeout(() => {
+        $("#error_info").fadeOut(200);
+    }, 3000);
+}
+</script>
+
+</body>
+</html>

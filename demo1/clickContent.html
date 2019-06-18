@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>点哪,哪出15*15的圆型div</title>
+    <style type="text/css">
+        html,body{
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .yuan {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+<script>
+    /**
+     * 点哪 哪出15*15的圆型div
+     */
+    document.body.addEventListener('click', function (e) {
+        var div = document.createElement('div'); //创建div元素
+        var className = document.createAttribute('class');//创建class属性
+        className.value = 'yuan';//属性赋值
+        div.style.left = e.clientX - 16/2 + 'px';
+        div.style.top = e.clientY - 16/2 + 'px';
+        div.setAttributeNode(className);//设置属性节点
+        div.style.backgroundColor = '#' + parseInt(0xffffff * Math.random()).toString(16);//随机背景颜色
+        document.body.appendChild(div);//给body添加元素div
+    })
+
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title7</title>
+    <style>
+        /*一像素边框*/
+        .sidebar .folder li{
+            /*boder:0.5px只能再ios8+使用*/
+            /*border-bottom: 0.5px solid #ddd;*/
+            padding: 8px 0 8px 15px;
+            color: #7c7c7c;
+            cursor: pointer;
+            position: relative;
+        }
+        .folder li+li:before{
+            position: absolute;
+            top: -1px;
+            left: 0;
+            content: '';
+            width: 100%;
+            height: 1px;
+            border-top: 1px solid #ddd;
+            -webkit-transform: scaleY(0.5);
+        }
+
+        /*单行文本溢出...*/
+        .inaline{
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            width: 200px;
+        }
+        /*多行文本溢出*/
+        .intwoline{
+            display: -webkit-box !important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <div class="folder">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </div>
+</div>
+
+<div class="inaline">激昂的骄傲多久就存酒卡健康</div>
+<div class="intwoline">
+    对计算机监控的骄傲圣诞节安静的骄傲的看世界打卡机KDJ案例
+</div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html>
+<head></head>
+<body>
+<button id="larger">Larger</button>
+<div id="container"></div>
+<!--<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.4.0.min.js"></script>-->
+<!--<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>-->
+<script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+<script src="kinetic-v5.1.0.min.js"></script>
+<!--<script src="https://cdn.bootcss.com/kineticjs/4.6.0/kinetic.min.js"></script>-->
+<script>
+    $(function(){
+        var stage = new Kinetic.Stage({
+            container: 'container',
+            width: 400,
+            height: 400
+        });
+        var layer = new Kinetic.Layer();
+
+        // Be sure to set width and height
+        // They are required for this method to work
+        var group = new Kinetic.Group({
+            x: 100,
+            y: 100,
+            width:100,
+            height:100
+        });
+        // store the original group center
+        // so we can center the group there
+
+        group.cx=group.getX()+group.getWidth()/2;
+        group.cy=group.getY()+group.getHeight()/2;
+        // group.cx=group.x()+group.width()/2;
+        // group.cy=group.y()+group.height()/2;
+
+
+
+        // custom scale function to both
+        // scale the group and center the results
+        group.scale=function(x,y){
+            group.setScale(x,y);
+            // group.setScale({
+            //     x : x,
+            //     y : y
+            // })
+            group.setPosition(
+                group.cx-group.getWidth()/2*group.getScale().x,
+                group.cy-group.getHeight()/2*group.getScale().y);
+                // group.cx-group.width()/2*group.scale().x,
+                // group.cy-group.height()/2*group.scale().y);
+            group.draw();
+        }
+
+        var box1 = new Kinetic.Rect({
+            x: 0,
+            y: 0,
+            width: 50,
+            height: 50,
+            fill: "blue",
+            stroke: 'black',
+            strokeWidth: 4
+        });
+        group.add(box1);
+
+        var box2 = new Kinetic.Rect({
+            x: 50,
+            y: 50,
+            width: 50,
+            height: 50,
+            fill: "green",
+            stroke: 'black',
+            strokeWidth: 4
+        });
+        group.add(box2);
+
+        layer.add(group);
+        stage.add(layer);
+
+        var scaleFactor=1;
+        $("#larger").click(function(){
+            scaleFactor+=0.10;
+            group.scale(scaleFactor,scaleFactor);
+            console.log(scaleFactor);
+        });
+
+    });
+
+</script>
+</body>
+</html>

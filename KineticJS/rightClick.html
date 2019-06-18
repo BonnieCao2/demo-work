@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="kinetic-v5.1.0.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+</head>
+<body>
+<div id='container'></div>
+<script>
+    $(function () {
+        var stage = new Kinetic.Stage({
+            container: 'container',
+            width: 600,
+            height: 400,
+            // draggable: true,
+        });
+        var layer = new Kinetic.Layer();
+
+        //创建一个要加进组中的矩形
+        var rect = new Kinetic.Rect({
+            x: 100,
+            y: 50,
+            width: 200,
+            height: 200,
+            fill: 'pink'
+        })
+        .on("click", function (e) {
+            if(e.evt.which == 3)//3右击 1是左击
+
+            {
+                disableContextMenu(true);
+                console.log("rect clicked");
+                console.log(rect)
+            }
+
+            // if(e.evt.which == 3)//注：与js与jq不同：1.kinetic中click和mousedown事件一样不分左右键，2.且if不加{}不判断，
+            // console.log(e)
+        });
+
+        layer.add(rect);
+        stage.add(layer);
+        stage.batchDraw();
+
+        /*
+        * contextmenu e.preventDefault();和return false;均有效
+        * mousedown 时无效
+        * */
+
+        // $('#container').on('mousedown',function (e) {
+        //     // e.preventDefault();
+        //     if(e.button == 2)//1左击 2右击
+        //     console.log(e,'jq')
+        // })
+
+        // $('#container').on('contextmenu',function (e) {
+        //     // e.preventDefault();
+        //         console.log(e,'----',e.preventDefault,'jq')
+        //     // return false;
+        // })
+
+        // $('#container').on('click',function (e) {
+        //     // e.preventDefault();
+        //         console.log(e,'----',e.preventDefault,'jq')
+        //     // return false;
+        // })
+
+
+
+
+
+        /*这是我最近使用的一种方法（使用一点jQuery），当我遇到问题时。
+        由于mousedown事件发生在contextmenu之前，这个技巧似乎抓住它，
+        它附加了一个body级oncontextmenu处理程序，暂时在mousedown事件中返回false，
+        执行你想要的操作，然后作为一个重要的部分，记得以后删除处理程序。*/
+
+        // $('#container').mousedown(function (e) {
+        //     if (e.button == 2) {
+        //         disableContextMenu(true);
+        //         showOptions({ x: e.clientX, y: e.clientY }); // do my own thing here
+        //     }
+        // });
+        //
+        // function showOptions(p) {
+        //     console.log(p)
+        // }
+
+        function disableContextMenu(boolDisable, fn) {
+            if (boolDisable) {
+                $(document).contextmenu(function (e) {
+                    if (fn !== undefined) {
+                        return fn(e);
+                    } else {
+                        return false;
+                    }
+                });
+            } else {
+                $(document).prop("oncontextmenu", null).off("contextmenu");
+            }
+        }
+    })
+</script>
+</body>
+</html>

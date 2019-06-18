@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+   /* // 创建父构造函数
+    function Person(name,age){
+        this.name = name;
+        this.age = age;
+        this.showName = function(){
+            console.log(this.name);
+        }
+    }
+    // 设置父构造函数的原型对象
+    Person.prototype.showAge = function(){
+        console.log(this.age);
+    }
+    // 创建子构造函数
+    function Student(name){
+        Person.call(this,name);
+    }
+    // 设置继承
+    Student.prototype = Person.prototype;
+    Student.prototype.constructor = Student;
+
+    // console.log(new Student('bonnie').name)//bonnie
+    // console.log(new Student('bonnie').age)//undefined
+    //console.log(new Student('bonnie').showName())//调用两次，一次是Person.showName,接着是此行
+
+
+    Student.prototype.showAge = function(){
+        console.log('hhhhh');
+    }
+    console.log(new Student('bonnie').showAge(),new Person('bonnie').showAge())//hhhhh,hhhhh  extends.html?_ijt=j9tp665an6fct3bcmrouc4s7t5:37 undefined*/
+
+
+
+    function Person(name,age){
+        this.name = name;
+        this.age = age;
+        this.showName = function(){
+            console.log(this.name);
+        }
+    }
+    Person.prototype.friends = function () {
+        console.log(['小王','小强','小王八'])
+    }
+
+    function Student(name,age){
+        // 借用构造函数(Person)
+        Person.call(this,name,age);
+    }
+
+   /*方法1*/
+   // deepCopy(Person.prototype);//使用深拷贝实现继承
+   /*方法2*/
+   //  Student.prototype = new Person()
+   /*方法3*/
+    Student.prototype = Object.create(Person.prototype);// 子类续承父类
+    Student.prototype.constructor = Student;
+
+    // console.log(new Student('bonnie',25).showName())
+
+   Student.prototype.friends = function(){
+       console.log('hhhhh');
+   }
+   console.log(new Student('bonnie').friends(),new Person().friends())/*hhhhh
+extends.html?_ijt=j9tp665an6fct3bcmrouc4s7t5:49 (3) ["小王", "小强", "小王八"]
+extends.html?_ijt=j9tp665an6fct3bcmrouc4s7t5:65 undefined undefined*/
+
+    //使用递归的方式实现数组、对象的深拷贝
+    function deepCopy(obj) {
+        //判断拷贝的要进行深拷贝的是数组还是对象，是数组的话进行数组拷贝，对象的话进行对象拷贝
+        var objClone = Array.isArray(obj) ? [] : {};
+        //进行深拷贝的不能为空，并且是对象或者是
+        if (obj && typeof obj === "object") {
+            for (key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    if (obj[key] && typeof obj[key] === "object") {
+                        objClone[key] = deepClone1(obj[key]);
+                    } else {
+                        objClone[key] = obj[key];
+                    }
+                }
+            }
+        }
+        return objClone;
+    }
+
+    /*let arr = ['a','b','c']
+    for(let i in arr){
+        console.log(i)
+    }*/
+</script>
+</body>
+</html>

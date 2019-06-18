@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    //检测浏览器缩放比
+    function detectZoom (){
+        var ratio = 0,
+            screen = window.screen,
+            ua = navigator.userAgent.toLowerCase();
+        if (window.devicePixelRatio !== undefined) {
+            ratio = window.devicePixelRatio;
+        } else if (~ua.indexOf('msie')) {
+            if (screen.deviceXDPI && screen.logicalXDPI) {
+                ratio = screen.deviceXDPI / screen.logicalXDPI;
+            }
+        }   else if (window.outerWidth !== undefined && window.innerWidth !== undefined) {
+            ratio = window.outerWidth / window.innerWidth;
+        }
+        if (ratio){
+            ratio = Math.round(ratio * 100);
+        }
+        return ratio;
+    }
+
+    //根据分辨率自适应
+    let w = $(window).width(),
+        scale = w/1920;
+    $('body').css({
+        'transform': 'scale('+scale+','+scale+')',
+        'transform-origin': 'left top'
+    });
+
+    $(window).resize(function () {
+        let browserZoom = detectZoom()/100;
+        // alert(browserZoom)
+        let w =$(window).width(),
+            scale = w/1920;
+        $('body').css({
+            'transform': 'scale('+scale+','+scale+')',
+            'transform-origin': 'left top'
+        });
+    })
+</script>
+</body>
+</html>

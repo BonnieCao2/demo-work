@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>菜鸟教程(runoob.com)</title>
+    <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js">
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("p").click(function(){
+                if ($("p").parent().is(":visible")) { //.not(:hidden)
+                    alert("p 的父元素是 div");
+                }
+            });
+
+            let arr=[];
+            if(arr){
+                alert(arr.length)
+            }
+        });
+    </script>
+</head>
+<body>
+
+<div>
+    <p style='display:block'>点我查看父元素是否是 div。</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-1.8.0.js"></script>
+    <script src="kinetic-v5.1.0.min.js"></script>
+</head>
+<body>
+<div id="btn" style="width: 80px;height: 40px;background-color: pink;"></div>
+<div id="d"></div>
+<script>
+    $(function () {
+        let stage = new Kinetic.Stage({
+            container : 'd',
+            width : 1920,
+            height : 800
+        });
+        let layer = new Kinetic.Layer();
+
+        stage.add(layer)
+
+        let imgSrc = './agvcar.png',
+            img = new Image(),
+            imgObj;
+        img.src = imgSrc;
+        img.onload = function (ev) {
+            imgObj = new Kinetic.Image({
+                id: 'img',
+                x: 200,
+                y: 200,
+                width: 128,
+                height: 128,
+                image: img
+            })
+            layer.add(imgObj)
+            layer.draw();
+        }
+
+        $('#btn').on('click',function () {
+           let img =  layer.find('#img')[0]
+            img.attrs.image.src =  './agvcar (1).png';
+        })
+    })
+</script>
+</body>
+</html>

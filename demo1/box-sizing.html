@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>菜鸟教程(runoob.com)</title>
+    <script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+    <style>
+        .div1 {
+            width: 300px;
+            height: 100px;
+            border: 1px solid blue;
+            box-sizing: border-box;
+        }
+
+        .div2 {
+            width: 300px;
+            height: 100px;
+            padding: 50px;
+            border: 1px solid red;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+<div class="div1">两个 div 现在是一样大小的!</div>
+<br>
+<div id="d2" class="div2">菜鸟教程!</div>
+
+<script>
+    $(function () {
+        console.log($('.div1').width(),'$(\'.div1\').width()')
+        console.log($('.div2').width())
+        console.log($('.div2').css('width'))
+        console.log($('.div2').outerWidth())
+
+        // 298.020834 "$('.div1').width()"
+        // box-sizing.html?_ijt=ove16kd8udj7nogg549vdei75f:33 198.02083399999998
+        // box-sizing.html?_ijt=ove16kd8udj7nogg549vdei75f:34 300px
+        // box-sizing.html?_ijt=ove16kd8udj7nogg549vdei75f:35 300
+    })
+</script>
+</body>
+</html>

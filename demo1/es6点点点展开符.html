@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    // ES5 的写法
+    // function f(x, y, z) {
+    //     console.log(x,y,z,arguments)
+    // }
+    // var args = [0, 1, 2];
+    // // f.apply(null, args);
+    // f.call(null, ...args);
+
+    // ES6 的写法
+    // function f(x, y, z) {
+    //     console.log(x,y,z)
+    // }
+    // var args = [0, 1, 2];
+    // f(...args);
+
+    /*function test(a) {
+        if(JSON.stringify(m) != "{}"){
+            alert('true')
+        }else{
+            alert('false')
+        }
+    }
+
+    let b = {}
+    console.log(test({}))*/
+
+    function check(str) {
+        // if (escape(str).indexOf("%u")!=-1){
+        //     alert("不能含有汉字");
+        // }
+        if(str.match(/\D/)!=null){
+            alert('不能含有字母');
+        }
+
+    }
+
+    let p = 'A8'
+    check(p)
+</script>
+</body>
+</html>

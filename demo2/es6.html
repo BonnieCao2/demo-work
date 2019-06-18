@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    console.log(new Object())
+
+    var propKey = 'foo';
+
+    var obj = {
+        [propKey]: true,
+        ['a' + 'bc']: 123
+    };
+
+    console.log(obj)
+
+    class MyClass {
+        constructor() {
+            // ...
+        }
+        get prop() {
+            return 'getter';
+        }
+        set prop(value) {
+            console.log('setter: '+value);
+        }
+    }
+
+    let inst = new MyClass();
+
+    let getter = inst.prop
+    console.log(getter)
+
+    inst.prop = 123;
+    // setter: 123
+
+</script>
+</body>
+</html>

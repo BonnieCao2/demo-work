@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>-->
+    <script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+</head>
+<body>
+<div id="d1">
+    <div id="q1">
+        <div class="a1"></div>
+        <div class="a2"></div>
+    </div>
+    <div id="q2">
+        <div class="a3"></div>
+    </div>
+    <div id="q3">
+        <div class="a4"></div>
+    </div>
+</div>
+<script>
+    $(function () {
+        var arr = [{id: 'A1',dom: '<div id="q1">' +
+            '        <div class="a1"></div>' +
+            '    </div>'},
+            {id: 'A2',dom: '<div id="q1">' +
+                '        <div class="a2"></div>' +
+                '    </div>'},
+            {id: 'A3',dom: '<div id="q2">' +
+                '        <div class="a3"></div>' +
+                '    </div>'},
+            {id: 'A4',dom: '<div id="q3">' +
+                '        <div class="a4"></div>' +
+                '    </div>'}
+
+            ];
+
+        console.log(arr)
+
+
+        $('#d1').empty();
+
+        for(let i=0; i<arr.length; i++){
+            var dom = arr[i].dom;
+            $('#d1').append(dom);
+        }
+    })
+</script>
+</body>
+</html>

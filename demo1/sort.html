@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    // var arr =  ["Area42f4", "Area43f4", "Area44f0", "Area54f2", "Area55f0", "Area58f4"];
+    // arr.sort();
+    // console.log(arr);
+
+
+    // function sortNumber(a,b) {
+    //     // return a - b //升序
+    //     return b - a//降序
+    // }
+    //
+    // var arr = new Array(6)
+    // arr[0] = "10"
+    // arr[1] = "5"
+    // arr[2] = "40"
+    // arr[3] = "25"
+    // arr[4] = "1000"
+    // arr[5] = "1"
+    //
+    // document.write(arr + "<br />")
+    // document.write(arr.sort(sortNumber))
+
+
+    var arr = [
+        {name:'zopp',age:2,hab: 1},
+        {name:'gpp',age:6,hab: 2},
+        {name:'yjj',age:4,hab: 3}
+    ];
+
+    function compare(property){
+        return function(a,b){
+            var value1 = a[property];
+            var value2 = b[property];
+            return value1 - value2;//升序
+        }
+    }
+    function compare2(property){
+        return function(a,b){
+            var value1 = a[property];
+            var value2 = b[property];
+            return value2 - value1;//降序
+        }
+    }
+    // console.log(arr.sort(compare('age')),'age')
+    // console.log(arr.sort(compare('name')),'name')
+    arr.sort(compare('age'))
+    console.log(arr,'age')
+    // console.log(arr.sort(compare2('hab')),'hab')
+</script>
+</body>
+</html>

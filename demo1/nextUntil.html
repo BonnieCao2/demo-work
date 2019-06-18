@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        .siblings *
+        {
+            display: block;
+            border: 2px solid lightgrey;
+            color: lightgrey;
+            padding: 5px;
+            margin: 15px;
+        }
+    </style>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+    </script>
+    <script>
+        $(document).ready(function(){
+            // $("h2").nextUntil($('h6')).css({"color":"red","border":"2px solid red"});//从h3到h5
+            // $("h2").prev().nextUntil($('h6').next()).css({"color":"red","border":"2px solid red"});//从h2到h6
+
+            $('.class>div').each(function () {
+                // if($(this).children('div').length == 3 && $(this).prev().nextUntil($('.h3').next()).children('div').length == 3){
+                //     console.log(this)
+                // }
+
+
+            })
+
+            let a = $('.h0').nextUntil($('.h3'))[0]
+            console.log(a)
+
+            $('.dad').append(a)
+            // console.log($('.h0').prev())
+            // console.log($('.h1').prev())
+            // console.log($('.h1'))
+            // console.log($('.h3').next())
+        });
+    </script>
+</head>
+<body class="siblings">
+
+<!--<div>div (父元素)-->
+    <!--<p>p</p>-->
+    <!--<span>span</span>-->
+    <!--<h2>h2</h2>-->
+    <!--<h3>h3</h3>-->
+    <!--<h4>h4</h4>-->
+    <!--<h5>h5</h5>-->
+    <!--<h6>h6</h6>-->
+    <!--<p>p</p>-->
+<!--</div>-->
+
+<div class="dad">
+    <div class="h0">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div class="h1">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div class="h2">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div class="h3">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+
+</body>
+</html>

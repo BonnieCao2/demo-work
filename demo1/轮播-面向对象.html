@@ -1,0 +1,239 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>原生jq面向对象轮播图(原创)-jq22.com</title>
+<script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+<style>
+* {
+	margin:0;
+	padding:0;
+}
+#banner {
+	width:500px;
+	height:300px;
+	margin:20px auto;
+	/*border:1px solid red;
+	*/
+    position:relative;
+}
+#banner .pic {
+	width:100%;
+	height:100%;
+	overflow:hidden;
+}
+li {
+	list-style:none;
+}
+#banner .pic ul {
+	width:1000%;
+	overflow:hidden;
+	margin-left:-500px;
+}
+#banner .pic ul li {
+	float:left;
+}
+#banner .tab {
+	width:70px;
+	height:14px;
+	/*background:rgba(255,255,255,0.5);
+	*/
+    position:absolute;
+	left:50%;
+	margin-left:-35px;
+	bottom:10px;
+	border-radius:7px;
+}
+#banner .tab ul li {
+	width:10px;
+	height:10px;
+	border-radius:100%;
+	background:#999;
+	float:left;
+	margin:2px 2px;
+	cursor:pointer;
+}
+#banner .tab ul li.on {
+	background:#ffffff;
+}
+#banner .btn {
+	display:none;
+}
+#banner .btn a {
+	display:block;
+	width:40px;
+	height:40px;
+	text-decoration:none;
+	background:rgba(0,0,0,0.3);
+	color:#fff;
+	font-size:26px;
+	font-weight:bold;
+	text-align:center;
+	line-height:40px;
+	position:absolute;
+	top:50%;
+	margin-top:-20px;
+}
+#prev {
+	left:5px;
+}
+#next {
+	right:5px;
+}
+#banner .btn a.on {
+	background:rgba(0,0,0,0.6)
+}
+#banner .btn a:hover {
+	background:rgba(0,0,0,0.6)
+}
+</style>
+</head>
+<body>
+<div id="banner">
+    <div class="pic">
+        <ul>
+            <li>
+                <a href="###"><img src="http://www.jq22.com/img/cs/500x300-5.png"></a>
+            </li>
+            <li>
+                <a href="###"><img src="http://www.jq22.com/img/cs/500x300-1.png"></a>
+            </li>
+            <li>
+                <a href="###"><img src="http://www.jq22.com/img/cs/500x300-2.png"></a>
+            </li>
+            <li>
+                <a href="###"><img src="http://www.jq22.com/img/cs/500x300-3.png"></a>
+            </li>
+            <li>
+                <a href="###"><img src="http://www.jq22.com/img/cs/500x300-4.png"></a>
+            </li>
+            <li>
+                <a href="###"><img src="http://www.jq22.com/img/cs/500x300-5.png"></a>
+            </li>
+            <li>
+                <a href="###"><img src="http://www.jq22.com/img/cs/500x300-1.png"></a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab">
+        <ul>
+            <li class="on"></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="btn">
+        <a href="###" id="prev">
+            &lt;</a>
+                <a href="###" id="next">&gt;</a>
+    </div>
+</div>
+
+<script>
+$(function() {
+
+    function Banner(ele) {
+        this.$tabLi = $(ele.tabLi); //小圆点
+        this.$picUl = $(ele.picUl);
+        this.$banner = $(ele.banner);
+        this.$btn = $(ele.btn);
+        this.$btnA = $(ele.btnA);
+        this.imgWidth = $(ele.picLi).width();
+        this.index = 0;
+        this.nowTime = new Date();
+        this.timer = null;
+        this.tabLiClick(); //小圆点点击切换banner
+        this.bannerHover(ele.delayTime); //鼠标移入停止自动切换,移出继续自动切换
+        this.btnAClick(); //左右按钮点击切换banner
+        this.autoPlay(ele.delayTime); //自动切换banner
+    }
+
+    Banner.prototype.tabLiClick = function() {
+        var _this = this;
+        _this.$tabLi.click(function() {
+            //获取当前的序列号
+            _this.index = $(this).index();
+            $(this).addClass('on').siblings().removeClass('on');
+            //动画animate({属性 ： 值}，时间);
+            _this.$picUl.animate({
+                marginLeft: -_this.imgWidth * (_this.index + 1) + 'px'
+            }, 300);
+        });
+    };
+
+    Banner.prototype.bannerHover = function(delayTime = 2000) {
+        var _this = this;
+        _this.$banner.hover(function() {
+            _this.$btn.show();
+            clearInterval(_this.timer);
+        }, function() {
+            _this.$btn.hide();
+            _this.autoPlay(delayTime);
+        });
+    };
+
+    Banner.prototype.btnAClick = function() {
+        var _this = this;
+        _this.$btnA.click(function() {
+            if (new Date() - _this.nowTime > 300) //当前时间减去上一次时间大于300毫秒才执行
+            {
+                _this.nowTime = new Date();
+                var i = $(this).index();
+                //判断点击哪个按钮
+                i ? _this.index++ : _this.index--;
+                fn(_this);
+            }
+        }).mousedown(function() {
+            return false;
+        });
+    };
+
+    Banner.prototype.autoPlay = function(delayTime = 2000) {
+        var _this = this;
+        //开启定时器
+        _this.timer = setInterval(function() {
+            _this.index++;
+            fn(_this);
+        }, delayTime);
+    };
+
+    function fn(_this) {
+        var liIndex = _this.index;
+        //判断下标，最后一张时按钮也要回到第一个
+        if (liIndex >= _this.$tabLi.length) {
+            liIndex = 0;
+        } else if (liIndex < 0) {
+            liIndex = _this.$tabLi.length - 1;
+        }
+        _this.$tabLi.eq(liIndex).addClass('on').siblings().removeClass('on');
+        _this.$picUl.animate({
+            marginLeft: -_this.imgWidth * (_this.index + 1) + 'px'
+        }, 300, function() { //回调函数判断，让图片瞬间复位
+            if (_this.index == _this.$tabLi.length) {
+                _this.$picUl.css('marginLeft', -_this.imgWidth + 'px');
+                _this.index = 0;
+            } else if (_this.index < 0) {
+                _this.$picUl.css('marginLeft', -_this.imgWidth * (_this.$tabLi.length) + 'px');
+                _this.index = _this.$tabLi.length - 1;
+            }
+        });
+    }
+
+    var banner = new Banner({
+        tabLi: '#banner .tab li',
+        picUl: '#banner .pic ul',
+        banner: '#banner',
+        btn: '#banner .btn',
+        btnA: '#banner .btn a',
+        picLi: '#banner .pic li',
+        //delayTime需大于300
+        delayTime: 2000
+    });
+
+});
+</script>
+
+</body>
+</html>

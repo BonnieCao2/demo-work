@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>取色器</title>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+</head>
+<body>
+背景色<input type="color" value="#ffffff">
+
+<input type="file" name="file" id="fileInput"></td>
+
+<form name="form1">
+    a:<input type="radio" name="checkit" value="a"checked>
+    <br>
+    b:<input type="radio" name="checkit" value="b">
+    <br>
+    c :<input type="radio" name="checkit" value="c">
+    <br>
+</form>
+
+b:<input type="checkbox" name="checkit2" value="b">
+<script>
+    $(function () {
+        $("[type='color']").change(function() {
+            var col = $(this).val();
+            localStorage.setItem("bgc", col);
+            $("#source").css({
+                "background": col
+            });
+        });
+        initColor();
+        function initColor() {
+            //设置背景颜色
+            var color = localStorage.getItem("bgc");
+            if (color != null) {
+                $("#source").css({
+                    "background": color
+                });
+                $("[type='color']").val(color);
+            }
+        }
+    })
+</script>
+</body>
+</html>

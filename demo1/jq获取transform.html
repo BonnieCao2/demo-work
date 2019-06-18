@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+    <style>
+        div{
+            width: 200px;
+            height: 200px;
+            transform: scale(2,3);
+            background-color: pink;
+        }
+    </style>
+    <script>
+        $(function () {
+            // let trans = $('div').css('transform').replace(/[^0-9\-,]/g,'').split(',');
+            // console.log(trans)//["2", "0", "0", "3", "0", "0"]  ["25", "0", "0", "3", "0", "0"]
+            // console.log(parseFloat($('div').css('transform').replace(/[^0-9\-,]/g,'')))
+
+
+
+            //获取 transform 值
+
+            var reg=/matrix.(((-)?([0-9]+.)?\d+([, ]+)?){6})./g;
+
+            var str= $('div').css("transform");
+            //str  =  matrix(1, 0, 0, 1, 0, 0)
+
+            var arr=reg.exec(str);
+
+            var newarr = arr[1].split(/[, ]+/g);
+            //newarr = ["1", "0", "0", "1", "0", "0"]
+
+            console.log(newarr);//["2.5", "0", "0", "3", "0", "0"]
+
+
+            var arr2 = (/matrix.(((-)?([0-9]+.)?\d+([, ]+)?){6})./g).exec($('div').css("transform"))[1].split(/[, ]+/g);
+            console.log(arr2)//["2.5", "0", "0", "3", "0", "0"]
+        })
+    </script>
+</head>
+<body>
+<div>
+
+</div>
+</body>
+</html>

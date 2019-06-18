@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>test2</title>
+	<style>
+		#one{
+			width: 500px;
+			height: 500px;
+			background-color: red;
+		}
+		#two{
+			width: 400px;
+			height: 400px;
+			background-color: green;
+		}
+		#three{
+			width: 300px;
+			height: 300px;
+			background-color: yellow;
+		}
+		#four{
+			width: 200px;
+			height: 200px;
+			background-color: pink;
+		}
+	</style>
+</head>
+<body>
+<ul id="user-list">
+	<li>张三</li>
+	<li>李四</li>
+	<li>王五</li>
+</ul>
+<div id="one">
+	<div id="two">
+		<div id="three">
+			<div id="four">
+
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	var one =document.getElementById('one');
+	var two =document.getElementById('two');
+	var three=document.getElementById('three');
+	var four=document.getElementById('four');
+	one.addEventListener('click',function () {
+		alert('one')
+    },true)
+    two.addEventListener('click',function () {
+        alert('two')
+    },true)
+    three.addEventListener('click',function () {
+        alert('three')
+    },false)
+    four.addEventListener('click',function () {
+        alert('four')
+    },false)
+</script>
+<script>
+    var ul = document.getElementsByTagName("ul")[0];
+    var list = ul.getElementsByTagName("li");
+
+    for(let i = 0;i< list.length; i++){
+
+        list[i].onclick = function (k){
+            var html = list[i];
+                // alert(k + "----" + i+html.innerHTML);
+        };
+    }
+
+    // function foo(){
+    //     for(var i = 0, len = list.length; i < len; i++){
+    //         var that = list[i];
+    //         list[i].onclick = (function(k){
+    //             var info = that.innerHTML;
+    //             return function(){
+    //                 alert(k + "----" + info);
+    //             };
+    //         })(i);
+    //     }
+    // }
+    //
+    // foo();
+</script>
+	<script>
+        // var a=[];
+        // a[0]=0;
+        // a[1]=1;
+        // a[4]=4;
+        // console.log(a.length) //5
+        // console.log(a[3]) //undefined
+
+        // var x=1;
+        // var y=8;
+        // method(8);
+        // alert(x+y); //12
+        //
+        // function method(y) {
+			// x+=3;
+			// y+=3;
+			// alert(x+y); //15
+        // }
+
+		// var val =1;
+		// var obj = {
+		//     val: 2,
+		// 	dbl: function () {
+		// 		this.val *= 2;
+		// 		val *= 2;
+		// 		console.log(val);//2
+		// 		console.log(this.val);//4
+         //    }
+		// }
+		// obj.dbl();// 2 4
+		// var func =obj.dbl;
+		// func();//8 8
+
+
+
+
+
+
+
+
+        // var a = {n:1};
+        // var b = {n:1};
+        // console.log(a=b);
+        // console.log(a==b);
+        // console.log(a===b);
+
+		/*var a=1,b='2',c=10;
+		console.log(a+c+b)
+
+        function a() {
+
+        }
+        function b(a) {
+			this.a = a;
+        }
+        function c(a) {
+            if(a){
+                this.a = a;
+			}
+
+        }
+        a.prototype.a = 1;
+        b.prototype.a = 1;
+        c.prototype.a = 1;
+
+        console.log(a.a);
+        console.log(b.a);
+        console.log(c.a);*/
+
+	</script>
+</body>
+</html>

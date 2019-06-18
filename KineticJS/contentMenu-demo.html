@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./jquery.contextMenu.css">
+    <script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+    <script src="kinetic-v5.1.0.min.js"></script>
+    <script src="jquery.contextMenu.js"></script>
+    <script src="jquery.ui.position.js"></script>
+
+
+    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.2.3/jquery.contextMenu.css" rel="stylesheet"/>-->
+    <!--<script src="kinetic-v5.1.0.min.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.2.3/jquery.ui.position.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.2.3/jquery.contextMenu.min.js"></script>-->
+
+    <!--<script src="jquery.contextmenu.r2.js"></script>-->
+
+    <style>
+        button{
+            width: 100px;
+            height: 50px;
+        }
+        .context-menu-list.context-menu-root .context-menu-item{
+            background: linear-gradient(90deg, #e0e0e0 20% , pink 20%);
+        }
+    </style>
+</head>
+<body>
+<button id="btn"></button>
+<ul id="the-node">
+    <li><span class="context-menu-one btn btn-neutral">right click me 1</span></li>
+    <li><span class="context-menu-one btn btn-neutral">right click me 2</span></li>
+    <li>right click me 3</li>
+    <li>right click me 4</li>
+</ul>
+
+<!--<ul id="ul"  type="context" class="showcase">-->
+    <!--<li>111</li>-->
+<!--</ul>-->
+
+<menu id="ul" type="context" class="show">
+    <menuitem label="ajay 56"></menuitem>
+    <menuitem label="vijay 1234"></menuitem>
+</menu>
+
+<script>
+    $(function(){
+        $('#the-node').contextMenu({
+            selector: 'li',
+            callback: function(key, options) {
+                var m = "clicked: " + key + " on " + $(this).text();
+                window.console && console.log(m) || alert(m);
+            },
+            items: {
+                "edit": {name: "Edit", icon: "edit"},
+                "cut": {name: "Cut", icon: "cut"},
+                "copy": {name: "Copy", icon: "copy"},
+                "paste": {name: "Paste", icon: "paste"},
+                "delete": {name: "Delete", icon: "delete"},
+                "sep1": "---------",
+                "quit": {name: "Quit", icon: function($element, key, item){ return 'context-menu-icon context-menu-icon-quit'; }}
+            }
+        });
+
+
+        // $.contextMenu({
+        //     selector: '#btn',
+        //     callback: function(key, options) {
+        //         var m = "clicked: " + key + " on " + $(this).text();
+        //         window.console && console.log(m) || alert(m);
+        //     },
+        //     // items: {
+        //     //     "edit": {name: "Edit"},
+        //     //     "cut": {name: "Cut", icon: "cut"},
+        //     //     "copy": {name: "Copy", icon: "copy"},
+        //     //     "paste": {name: "Paste", icon: "paste"},
+        //     //     "delete": {name: "Delete", icon: "delete"},
+        //     //     "sep1": "---------",
+        //     //     "quit": {name: "Quit", icon: function($element, key, item){ return 'context-menu-icon context-menu-icon-quit'; }}
+        //     // },
+        //     items: $.contextMenu.fromMenu($('#ul')),
+        //     bindings: {
+        //
+        //     },
+        //     // menuStyle:{    //菜单外框样式
+        //     //     border:'2px solid #999'
+        //     // },
+        //     // itemStyle:{    //菜单选项框样式
+        //     //     fontFamily:'verdana',
+        //     //         backgroundColor:'#666',
+        //     //         color:'white',
+        //     //         border:'none',
+        //     //         padding:'1px'
+        //     // },
+        //     // itemHoverStyle:{    //选项选中的样式
+        //     //     color:'#666',
+        //     //         backgroundColor:'#f7f7f7',
+        //     //         border:'none'
+        //     // }
+        //
+        //
+        // })
+
+
+    });
+
+</script>
+</body>
+</html>

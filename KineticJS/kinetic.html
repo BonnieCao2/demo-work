@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<div id="container"></div>
+<button id="box">点我！！！</button>
+
+<body>
+    <script src="./kinetic-v5.1.0.min.js"></script>
+    <script> 
+
+        //在页面加载时进行绘图 
+        window.onload = function () {
+            //创建 Kinetic 舞台，绑定我们添加的<div>容器 
+            var stage = new Kinetic.Stage({
+                container: 'container', //<div>的 id 
+                width: 1920, //创建的舞台宽度 
+                height: 800, //创建的舞台高度 
+                draggable: true
+            }); //创建 Kinetic 用户层 
+            var layer = new Kinetic.Layer(); //创建一个 Kinetic 矩形对象 
+            var group = new Kinetic.Group(); 
+            var xPosition = 0
+            for (var i = 0; i < 20000; i++) {
+                var isNextLine = false
+
+                if (i % 200 === 0) {
+                    isNextLine = true
+                    xPosition = 0
+                }
+                else {
+                    isNextLine = false
+                    xPosition += 10
+                }
+                var rect = new Kinetic.Rect({
+                    id: 'hhh' + i,
+                    name: 'wocao',
+                    x: xPosition,//矩形左上角 x 坐标 
+                    y: 50 + Math.floor(i / 200) * 10, //矩形左上角 y 坐标 
+                    width: 10, //矩形的宽度 
+                    height: 10, //矩形的高度 
+                    fill: 'red', //矩形的填充色 
+                    stroke: 'black', //矩形边缘线的颜色 
+                    strokeWidth: 4 //矩形边缘线的宽度 
+                }); //向用户层中添加上面的矩形 
+                group.add(rect); //将上面的用户层添加到舞台上 
+            }
+            layer.add(group); 
+
+            stage.add(layer);
+            stage.draw();
+
+            box.onclick = function () {
+                console.log(11)
+                var canvasElement = stage.get('.wocao')
+                // for (var i = 0; i < 20000; i++) {
+                //     var canvasElement = stage.get('#hhh' + i)[0]
+                //     var y = canvasElement.attrs.y
+                //     canvasElement.setY(y - 500)
+                //
+                // }
+
+                console.log(stage.get('#hhh' + 0)[0])
+                console.log(stage.find('.wocao'))
+                let arr = stage.find('.wocao')
+                for(let item of arr){
+                    let canvasElement = item;
+                    var y = canvasElement.attrs.y;
+                    canvasElement.setY(y - 500);
+                }
+
+
+
+
+
+                // console.log(canvasElement[0])
+                // canvasElement.setX()
+                // canvasElement.forEach(val => {
+                //     var y = val.attrs.y
+                //     val.setY(y - 50)
+                // });
+                // canvasElement.setAttrs({x:0,y:0})
+                // for()
+                stage.draw();
+            }
+        }; 
+    </script>
+</body>
+
+</html>

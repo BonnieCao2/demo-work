@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+</head>
+<body>
+
+<div id="log" style="width: 100px;height: 50px;background: pink" onclick="fun1()"></div>
+<ul>
+    <li>
+        <a href="http://www.webo.com/liuwayong">我的微博</a>
+    </li>
+    <li>
+        <a href="http://http://www.cnblogs.com/Wayou/">我的博客</a>
+    </li>
+    <li>
+        <a href="http://wayouliu.duapp.com/">我的小站</a>
+    </li>
+</ul>
+
+<script>
+    $(function () {
+        // $.extend({
+        //     sayHello: function(name) {
+        //         console.log('Hello,' + (name ? name : 'Dude') + '!');
+        //     }
+        // })
+
+        $.sayHello = function(name) {
+            console.log('Hello,' + (name ? name : 'Dude') + '!');
+        }
+
+        $.sayHello(); //调用
+        $.sayHello('Wayou'); //带参调用
+
+        $.extend({
+            log: function(message) {
+                var now = new Date(),
+                    y = now.getFullYear(),
+                    m = now.getMonth() + 1, //！JavaScript中月分是从0开始的
+                    d = now.getDate(),
+                    h = now.getHours(),
+                    min = now.getMinutes(),
+                    s = now.getSeconds(),
+                    time = y + '/' + m + '/' + d + ' ' + h + ':' + min + ':' + s;
+                console.log(time + ' My App: ' + message);
+            }
+        })
+        $.log('initializing...'); //调用
+
+
+        // $.fn.extend({
+        //     myPlugin: function() {
+        //         //在这里面,this指的是用jQuery选中的元素
+        //         this.css('color', 'red');
+        //     }
+        // })
+        // $.fn.myPlugin = function() {
+        //     //在这里面,this指的是用jQuery选中的元素
+        //     this.css('color', 'red');
+        //     this.each(function() {
+        //         //对每个元素进行操作
+        //         $(this).append(' ' + $(this).attr('href'));
+        //     })
+        // }
+        // $('a').myPlugin();
+
+
+        $.fn.myPlugin = function(options) {
+            var defaults = {
+                'color': 'red',
+                'fontSize': '12px'
+            };
+            var settings = $.extend({},defaults, options);//将一个空对象做为第一个参数
+            return this.css({
+                'color': settings.color,
+                'fontSize': settings.fontSize
+            });
+        }
+        $('a').myPlugin({
+            'color': '#2C9929',
+            'fontSize': '20px'
+        });
+
+    })
+
+
+</script>
+
+</body>
+</html>

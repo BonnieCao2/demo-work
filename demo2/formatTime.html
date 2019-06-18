@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function getTimeNow() {
+        let date = new Date(),//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        Y = date.getFullYear() + '-',
+        M = format(date.getMonth()+1) + '-',
+        D = format(date.getDate()) + ' ',
+        h = format(date.getHours()) + ':',
+        m = format(date.getMinutes()) + ':',
+        s = format(date.getSeconds());
+        return Y+M+D+h+m+s;
+
+        function format(v) {
+            return  v < 10 ? '0' + v : v;
+        }
+    }
+
+    console.log(getTimeNow())
+</script>
+</body>
+</html>

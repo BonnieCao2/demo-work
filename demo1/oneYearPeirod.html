@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var xData = function() {//获取近12月日期
+        var dataArr = [];
+        var data=new Date();
+        var year=data.getFullYear();
+        data.setMonth(data.getMonth()+1)//获取到当前月份,设置月份
+        for (var i = 0; i < 12; i++) {
+            data.setMonth(data.getMonth()-1);//每次循环一次 月份值减1
+            dataArr.push(data.getFullYear()+"-"+(data.getMonth()+1))
+        }
+        return dataArr.reverse();
+    }();
+    var xData1=function () {//获取当前时间的未来7天
+        var dd=new Date();
+        var arr=[];
+        for(var i=0;i<7;i++){
+            dd.setDate(dd.getDate()+1);
+            arr.push((dd.getMonth()+1)+"-"+dd.getDate())
+        }
+        return arr
+    }();
+
+    // console.log(xData)
+
+   //获得月份下拉框
+    function addOptions(){
+        var obj = document.getElementById("monList");
+        obj.options.length = 0;
+        var monthList = getMonthList();
+        for(var i = 0; i < monthList.length; i++){
+            obj.options.add(new Option(monthList[i], monthList[i]));
+            if(i == 0){
+                obj.options[i].selected = true;
+            }
+        }
+    }
+    //获取从上月起往前推24个月的月份
+    function getMonthList(){
+        var monList = [];
+        var d = new Date();
+        var currYear = d.getFullYear();
+        var currMon = d.getMonth();  // 获取上一个月份数值，此处不需要+1
+        for(var i = 0; i < 24; i++){
+            if(currMon < 10){
+                monList.push("" + currYear + "0" + currMon);
+            }else{
+                monList.push("" + currYear + "" + currMon);
+            }
+            currMon -= 1; // 获取上一个月份
+            if(currMon == 0){
+                currYear -= 1;
+                currMon = 12;
+            }
+        }
+        return monList;
+    }
+
+    //获取从当月起往前推12个月的月份
+    function getOneYearPeriod(){
+        var monList = [];
+        var d = new Date();
+        var currYear = d.getFullYear();
+        var currMon = d.getMonth()+1;  // 获取上一个月份数值，此处不需要+1
+        for(var i = 0; i < 12; i++){
+            if(currMon < 10){
+                monList.unshift("" + currYear + "0" + currMon);
+            }else{
+                monList.unshift("" + currYear + "" + currMon);
+            }
+            currMon -= 1; // 获取上一个月份
+            if(currMon == 0){
+                currYear -= 1;
+                currMon = 12;
+            }
+        }
+        return monList;
+    }
+
+    console.log(getOneYearPeriod())
+</script>
+</body>
+</html>

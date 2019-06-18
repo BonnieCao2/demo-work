@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-1.8.0.js"></script>
+    <script src="kinetic-v5.1.0.min.js"></script>
+</head>
+<body>
+<div id="d"></div>
+<script>
+    $(function () {
+        let stage = new Kinetic.Stage({
+            container : 'd',
+            width : 1920,
+            height : 800
+        });
+        let layer = new Kinetic.Layer();
+
+        stage.add(layer)
+
+        let x = 100,y=100,w=200,h=300,
+            g1 = new Kinetic.Group(),
+            rect1 = new Kinetic.Rect({
+                x: x,
+                y: y,
+                width: w,
+                height: h,
+                fill: '#fff',
+                stroke: 'yellow',
+                strokeWidth: 1
+            }),
+            rect2 = new Kinetic.Rect({
+                x: x,
+                y: y,
+                width: w,
+                height: h,
+                fill: 'pink',
+                stroke: 'transparent',
+                strokeWidth: 1,
+                // strokeAlpha:0.1
+            })
+        layer.add(g1);
+        g1.add(rect1);
+        g1.add(rect2);
+        g1.draw();
+
+        console.log(rect2)
+    })
+</script>
+</body>
+</html>

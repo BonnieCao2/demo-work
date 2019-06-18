@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-1.8.0.js"></script>
+    <style>
+        body{
+            transform: scale(2);
+            transform-origin: left top;
+        }
+        .box,.box2{
+            width: 200px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            color: #fff;
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            background: palegreen;
+            z-index: 111;
+            border: 1px solid #0b93d9;
+            margin: 30px;
+            /*margin-top: 1000px;*/
+        }
+        .box2{
+            margin-left: 600px;
+        }
+        .context{
+            width: 150px;
+            height: 150px;
+            background: pink;
+            position: absolute;
+            z-index: 11;
+        }
+        @keyframes mymove {
+            from {background-color:transparent;}
+            /*to {background-color: transparent;}*/
+        }
+        .box:after{
+            content: attr(data-after);
+            color: #fff;
+            font-size: 20px;
+        }
+        /*.box2:after{*/
+            /*content: attr(data-after);*/
+            /*color: #fff;*/
+            /*font-size: 20px;*/
+        /*}*/
+    </style>
+</head>
+<body>
+<div class="box"></div>
+<div class="box box2"></div>
+
+<script>
+    $(function () {
+        let scale =2;
+        $('.box').on('contextmenu',function (e) {
+            e.preventDefault()
+            console.log(e)
+
+            if($('.context')){
+                $('.context').remove();
+            }
+            $('body').append('<div class="context"></div>')
+
+            let pageX = e.pageX / scale,
+                pageY = e.pageY / scale;
+
+            $('.context').css({
+                'left': pageX + 'px',
+                'top': pageY + 'px',
+                'z-index': 111
+            })
+        })
+
+        $('.box').css({
+            'animation': 'mymove .5s infinite'
+        })
+        $('.box').attr('data-after','bbb')
+        $('.box2').attr('data-after','ccc')
+    })
+
+</script>
+</body>
+</html>

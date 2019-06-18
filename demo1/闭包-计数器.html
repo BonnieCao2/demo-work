@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+
+    //实例： http://www.runoob.com/js/js-function-closures.html
+
+    /*计数器困境*/
+    /*1.设想下如果你想统计一些数值，且该计数器在所有函数中都是可用的。
+       你可以使用全局变量，函数设置计数器递增：
+       但问题来了，页面上的任何脚本都能改变计数器，即便没有调用 add() 函数。
+       */
+    var counter = 0;
+
+    function add() {
+        return counter += 1;
+    }
+
+    add();
+    add();
+    add();
+    // 计数器现在为 3
+
+
+    /*2.JavaScript 内嵌函数，所有函数都能访问全局变量。*/
+    function add() {
+        var counter = 0;
+        return counter += 1;
+    }
+
+    add();
+    add();
+    add();
+    // 本意是想输出 3, 但事与愿违，输出的都是 1 !
+
+    function add() {
+        var counter = 0;
+        function plus() {counter += 1;}
+        plus();
+        return counter;
+    }
+    add();
+    add();
+    add();
+    // 计数器现在为1
+
+
+
+    /*3.JavaScript 闭包*/
+    var add = (function () {
+        var counter = 0;
+        return function () {return counter += 1;}
+    })();
+
+    add();
+    add();
+    add();
+    // 计数器为 3
+
+    /*4.*/
+    var add = function () {
+        var counter = 0;
+        return function () {return counter += 1;}
+    }
+    add()//function () {return counter += 1;}
+</script>
+</body>
+</html>

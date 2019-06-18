@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" Content="application/json;"
+          charset="UTF-8">
+    <title>根据尺寸统计在场箱</title>
+    <script src="<%=sourceRoot%>/js/boot.js" type="text/javascript"></script>
+    <script src="<%=sourceRoot%>/js/jquery-form.js" type="text/javascript"></script>
+    <script src="<%=sourceRoot%>/js/common.js" type="text/javascript"></script>
+    <script src="<%=sourceRoot%>/js/jscolor.min.js" type="text/javascript"></script>
+    <style type="text/css">
+        html, body {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="mini-fit">
+    <div style="width: 100%; height: 100%;">
+        <div class="mini-toolbar" style="border-bottom: 0; padding: 0px;">
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 100%;"><a class="mini-button"
+                                                iconCls="icon-find" onclick="find">确认查询</a>
+                        <input type="button" style="width:70px;" class="jscolor {valueElement:'chosen-value', onFineChange:'setTextColor(this)'};" value="设置颜色">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="datagrid1" class="mini-datagrid" virtualScroll="true"
+             style="width: 100%; height: 100%;"
+             dataField="content" url="" idField=""
+             multiSelect="true" pageSize="99999999" showPager="false"
+             autoLoad="true" showFilterRow="true" showSummaryRow="true"
+             ondrawsummarycell="onDrawSummaryCell">
+            <div property="columns">
+                <div type="indexcolumn" name="indexcolumn" headeralign="center"
+                     width="60">序号</div>
+                <div type="checkcolumn"></div>
+                <div name="iycCszCsizecd" field="iycCszCsizecd"
+                     headerAlign="center" allowSort="true" width="100">
+                    尺寸 <input id="iycCszCsizecdFilter" property="filter"
+                              class="mini-textbox" style="width: 100%;"
+                              onenter="gridFilterChanged" />
+                </div>
+                <div name="cnt20" field="cnt20" headerAlign="center" width="100"
+                     allowSort="true" summaryType="sum">20‘</div>
+                <div name="cnt40" field="cnt40" headerAlign="center" width="100"
+                     allowSort="true" summaryType="sum">40’</div>
+                <div name="cnt45" field="cnt45" headerAlign="center" width="100"
+                     allowSort="true" summaryType="sum">45’</div>
+                <div name="cntNum" field="cntNum" headerAlign="center" width="100"
+                     allowSort="true" summaryType="sum">合计</div>
+                <div name="color" field="color" headerAlign="center" width="100"
+                     allowSort="true">颜色</div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    Init();
+    var grid = mini.get("datagrid1");
+    var data;
+    $(function() {
+        // jQuery.ajax({
+        //     url : "<%=projectRoot%>/overView/findCountList?gridName=findSizeCntr",
+        //     type : 'post',
+        //     async : false,
+        //     contentType : "application/json",
+        //     success : function(text) {
+        //         data = text.content;
+        //         grid.setData(data);
+        //     }
+        // });
+        data =  [{
+            "voyId": null,
+            "iycCszCsizecd": "20",
+            "iycCstCopercd": null,
+            "iycStsCstatuscd": null,
+            "opmode": null,
+            "dnggno": null,
+            "cnt20": "0",
+            "cnt40y": null,
+            "cnt40p": null,
+            "cnt40": "0",
+            "cnt45": "0",
+            "cntNum": "11337",
+            "gp": null,
+            "ot": null,
+            "fr": null,
+            "rf": null,
+            "hc": null,
+            "tk": null,
+            "color": "59E08B"
+        }, {
+            "voyId": null,
+            "iycCszCsizecd": "40",
+            "iycCstCopercd": null,
+            "iycStsCstatuscd": null,
+            "opmode": null,
+            "dnggno": null,
+            "cnt20": "0",
+            "cnt40y": null,
+            "cnt40p": null,
+            "cnt40": "22932",
+            "cnt45": "0",
+            "cntNum": "22932",
+            "gp": null,
+            "ot": null,
+            "fr": null,
+            "rf": null,
+            "hc": null,
+            "tk": null,
+            "color": "247C2F"
+        }, {
+            "voyId": null,
+            "iycCszCsizecd": "45",
+            "iycCstCopercd": null,
+            "iycStsCstatuscd": null,
+            "opmode": null,
+            "dnggno": null,
+            "cnt20": "0",
+            "cnt40y": null,
+            "cnt40p": null,
+            "cnt40": "0",
+            "cnt45": "382",
+            "cntNum": "382",
+            "gp": null,
+            "ot": null,
+            "fr": null,
+            "rf": null,
+            "hc": null,
+            "tk": null,
+            "color": "12CDD5"
+        }]
+        grid.setData(data);
+    });
+    function onDrawSummaryCell(e) {
+        var record = e.record, column = e.column, field = e.field, value = e.value;
+        //客户端汇总计算
+        if (e.field == "cnt20") {
+            e.cellHtml = "20‘: " + e.value;
+        }
+        if (e.field == "cnt40") {
+            e.cellHtml = "40’: " + e.value;
+        }
+        if (e.field == "cnt45") {
+            e.cellHtml = "45’: " + e.value;
+        }
+        if (e.field == "cntNum") {
+            e.cellHtml = "合计: " + e.value;
+        }
+    }
+
+    grid
+        .on(
+            "drawcell",
+            function(e) {
+                var record = e.record, column = e.column, field = e.field, value = e.value;
+                //给帐号列，新增背景色
+                if (field == "color") {
+                    e.cellStyle = "background:#" + value + ";color:#"
+                        + value;
+                }
+            });
+
+    function gridFilterChanged(e) {
+        var iycCszCsizecd = mini.get("iycCszCsizecdFilter").getValue()
+            .toLowerCase();
+
+        //多条件组合过滤
+        grid.filter(function(row) {
+            //取消选中行
+            grid.deselect(row);
+            //iycCszCsizecd
+            var r1 = true;
+            if (iycCszCsizecd) {
+                r1 = String(row.iycCszCsizecd).toLowerCase().indexOf(
+                    iycCszCsizecd) != -1;
+                if (row.iycCszCsizecd == null) {
+                    r1 = false;
+                }
+            }
+
+            return r1;
+        });
+    }
+
+    function find(e){
+        if (window.CloseOwnerWindow)
+        {
+            return window.CloseOwnerWindow(e);
+        }
+        else
+            window.close();
+    }
+    var clo="000000";
+    function setTextColor(picker) {
+        clo=picker;
+        var rowData = grid.getSelected();
+        var newrow=rowData;
+        newrow.color=clo+"";
+        grid.updateRow (rowData, newrow);
+    }
+</script>
+</html>

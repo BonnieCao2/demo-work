@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+    <script src="kinetic-v5.1.0.min.js"></script>
+</head>
+<body>
+<div id="container"></div>
+<script>
+    window.onload = function () {
+        var imageObj = new Image();
+        imageObj.src = './a.png';
+        var stage = new Kinetic.Stage({
+            container: 'container',
+            width: 600,
+            height: 400
+        });
+        var layer = new Kinetic.Layer();
+
+        imageObj.onload = function () {
+            var image = new Kinetic.Image({
+                // x : 0,
+                // y : 0,
+                id:'img',
+                image : imageObj,
+                width : 200,
+                height : 200,
+            });
+            layer.add(image);
+            stage.add(layer);
+
+
+            image.off('click').on('click',function (e) {
+                if(e.evt.which == 1) {//1是左击
+                    // alert('a')
+                    let toolTipGroup = new Kinetic.Group({
+                        id: 'qdToolTipGroup'
+                    })
+                    let x = 80,
+                        y = 80,
+                        toolX = x,
+                        toolY = y,
+                        basicY = 5,
+                        w = 80,
+                        h = 20,
+                        fill = '#525659',
+                        stroke = "#6CA6CD",
+                        strokeWidth = 1,
+                        fontSize = 12,
+                        fontColor = '#fff'
+                    ;
+
+                    let paramArr = [toolX,toolY,basicY,w,h,fill,stroke,strokeWidth,fontSize,fontColor],
+                        textArr = ['a','b','c','d'];
+                    leftClickToolTipGroup(toolTipGroup,paramArr,textArr,null);
+                    layer.add(toolTipGroup);
+                    layer.batchDraw()
+
+                    let tooltipCanvas = layer.find('#qdToolTipGroup')[0];
+                    console.log(tooltipCanvas,'tooltipCanvas');
+                    console.log(toolTipGroup,'toolTipGroup')
+                    console.log(tooltipCanvas.find('.toolTipText1'),'tooltipCanvas.find(\'.toolTipText1\')')
+                    //toolTipGroup.find('.toolTipText1')[0].attrs.text = 'w';//无用
+                    tooltipCanvas.find('.toolTipText1').setText('w');//有用
+                    layer.batchDraw()
+                }else if(e.evt.which == 3) {//3右击
+
+                    // let menuStr = '<li>故障及维保信息</li>'+
+                    //     '<li>任务信息</li>' +
+                    //     '<li>设备信息</li>';
+                    //
+                    // disableContextMenu(true);
+                    // let pos = stage.getPointerPosition(),
+                    //     isShow = $('.contextmenuWrap').is(':visible');
+                    // if(isShow){
+                    //     contextmenuAppendHtml(menuStr,false,pos);
+                    // }else {
+                    //     contextmenuAppendHtml(menuStr,true,pos);
+                    // }
+                }
+            })
+
+
+        }
+
+
+
+
+        setTimeout(function () {
+
+
+            var imageObj2 = new Image();
+            imageObj2.src = './b.png';
+
+            // layer.find('#img')[0].attrs.x = 80; //无用
+            // layer.find('#img')[0].attrs.y = 80; //无用
+            layer.find('#img').setX(80) ;//有用
+            layer.find('#img').setY(80) ;//有用
+
+            //layer.find('#img')[0].attrs.image.src = './b.png';//无用 画出的是轨迹
+            //layer.find('#img')[0].attrs.image = imageObj2;//有用
+            layer.find('#img').setImage(imageObj2)//有用
+
+            layer.find('#img').setScale({
+                x: 2,
+                y: 2
+            })
+
+            layer.batchDraw();
+
+            console.log(layer.find('#img'),'image')
+
+
+            if(layer.find('#img2').length > 0){
+                alert('a')
+            }
+            console.log(layer,'layer')
+        },2000)
+
+
+        function formatField(field){
+            let fieldNew  = field == 0 ? field : field || 'a';
+            return fieldNew;
+        }
+
+        console.log(formatField(2))
+
+
+        /*左击tooltip*/
+        function leftClickToolTipGroup(toolTipGroup,paramArr,textArr,$btn,groupTarget){
+            let [toolX,toolY,basicY,w,h,fill,stroke,strokeWidth,fontSize,fontColor] = paramArr,
+                len = textArr.length;
+
+            //从上往下画 basicY是指距离被点击物体的距离
+            for(let i=len; i>=1; i--){
+                let toolTip = new Kinetic.Rect({
+                    name: 'toolTipRect' + (len - i + 1),
+                    x: toolX,
+                    y: toolY- (basicY + h*i),
+                    width: w,
+                    height: h,
+                    fill: fill,
+                    stroke: stroke,
+                    strokeWidth: strokeWidth
+
+                })
+
+                let toolTipText = new Kinetic.Text({
+                    name: 'toolTipText' + (len - i + 1),
+                    x: toolX + 5,
+                    y: toolY - (basicY + h*i - 5),
+                    text: textArr[Math.abs(i-len)],
+                    fontSize: fontSize,
+                    // fontFamily: fontFamilyCanvas,
+                    fill: fontColor
+                })
+
+                toolTipGroup.add(toolTip,toolTipText);
+            }
+
+            // toolTipGroup.hide();
+            if($btn){
+                if($btn.prop('checked')){
+                    toolTipGroup.show()
+                }else{
+                    toolTipGroup.hide()
+                }
+
+            }
+
+            //点击置顶
+            toolTipGroup.off('click').on('click',function () {
+                toolTipGroup.moveToTop();
+                layer.batchDraw();
+            })
+
+            layer.find('#agvArea').moveToTop(); //agv
+            layer.batchDraw();
+        }
+    };
+</script>
+</body>
+</html>

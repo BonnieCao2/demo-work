@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>三栏布局</title>
+</head>
+<body>
+<style>
+    html *{
+        padding: 0;
+        margin: 0;
+    }
+    #left{
+        float: left;
+        width: 300px;
+        min-height: 100px;
+        background-color: green;
+    }
+    #right{
+        float: right;
+        width: 300px;
+        min-height: 100px;
+        background-color: green;
+    }
+    #center{
+        min-height: 100px;
+        background-color: pink;
+    }
+</style>
+<section>
+    <style>
+        #wrap{
+            min-width: 500px;
+            width: 600px;
+            margin: 0 auto;
+            height: 500px;
+            background-color: pink;
+        }
+    </style>
+    <div id="wrap"></div>
+    <!--<div id="left"></div>
+    <div id="right"></div>
+    <div id="center"></div>-->
+</section>
+</body>
+</html>

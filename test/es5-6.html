@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>test</title>
+	<link rel="stylesheet" href="">
+	<script>
+	// ES5 中作用域
+const callbacks = []
+for (var i = 0; i <= 2; i++) {
+    callbacks[i] = function() {
+        return i * 2
+    }
+}
+
+console.table([
+    callbacks[0](),
+    callbacks[1](),
+    callbacks[2](),
+])
+
+const callbacks2 = []
+for (let j = 0; j <= 2; j++) {
+    callbacks2[j] = function() {
+        return j * 2
+    }
+}
+
+console.table([
+    callbacks2[0](),
+    callbacks2[1](),
+    callbacks2[2](),
+])
+
+	 // var aa = 2;
+	 // alert(window.aa);
+	 // (function () {
+	 //   aa = 3;
+	 // })();
+	 // alert(window.aa);
+	/*window.number = 'one';
+        document.number = 'two';
+
+        var s1 = {number: 'three' };
+        function changeColor(){
+            console.log(this.number);
+        }
+
+        changeColor.apply();         //one (默认传参)
+        changeColor.apply(window);   //one
+        changeColor.apply(document); //two
+        changeColor.apply(this);     //one
+        changeColor.apply(s1);       //three*/
+	// var car = 'abc';
+	// var car = ['a','b','c'];
+	// var car = {
+	// 	ai: 'a',
+	// 	bi: 'b',
+	// 	ci: 'c'
+	// }
+	// if(!car.length){
+	// 	console.log("car:"+car)
+	// }
+	// for(var i of car){
+	// 	console.log(i)
+	// }
+	// car.forEach(function(value,index){
+	// 	console.log("car:"+index)
+	// })
+
+	/*function person (name,age,sex) {
+		this.name = name;
+		this.age = age;
+		this.sex = sex
+	}
+	person.prototype = {
+		// constructor: person,
+		get: function(){
+			return this.name+' '+this.age+' '+this.sex;
+		},
+		set: function(name,age,sex){
+			return this.name+' '+this.age+' '+this.sex;
+		}
+	};
+	var a = new person('a',1,'male');
+	console.log(a.get());
+	console.log('b',2,'female')*/
+
+	/*class person{
+		constructor(name,age,sex){
+			this.name = name;
+			this.age = age;
+			this.sex = sex;
+		};
+		get (){
+			return this.name+' '+this.age+' '+this.sex;
+		};
+		set (name,age,sex){
+			return this.name+' '+this.age+' '+this.sex;
+		};
+	}
+	var a = new person('a',1,'male');
+	console.log(a.get());
+	console.log('b',2,'female')*/
+	</script>
+	<style>
+		.test{
+		    width: 100%;
+		    border: 5px solid #333;
+		    /*height: 500px;*/
+		}
+		.test:after{
+			display: block;
+			content: '';
+			clear: both;
+		}
+		.test1{
+		    background-color: red;
+		    width: 200px;
+		    height: 300px;
+		    float: left;
+		}
+		.test2{
+		    background-color: green;
+		    width: 200px;
+		    height: 200px;
+		    float: left;
+		}
+		.test3{
+		    background-color: blue;
+		    width: 200px;
+		    height: 100px;
+		    float: left;
+		}
+		.test4{
+			/*clear: both;*/
+		}
+	</style>
+	<script>
+	window.onload = function(){
+	var elment = document.querySelector(".test3")
+	elment.innerHTML = 'bbb'
+	console.log(elment)
+	elment.onclick=function(e){
+		alert('a')
+		console.log(e)
+	}
+
+	function iframeFun() {
+		// alert('iframeFun')
+		console.log('iframeFun')
+    }
+	}
+	
+	</script>
+</head>
+<body>
+	<!-- <h1>hello</h1> -->
+	<div class="test" id="test">
+		<div class="test1"></div>
+		<div class="test2"></div>
+	    <div class="test3">aaa</div>
+	    <div class="test4"></div>
+    </div>
+    
+</div>
+</body>
+</html>

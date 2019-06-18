@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script>
+        $(function () {
+            var $div = $('.test');
+            var arr=[];
+            $div.each(function(k,valt){
+                arr.push($(valt).attr('id').replace(/[^0-9]/ig,""));
+            });
+            console.log(arr)
+
+            // console.log( $('.test').attr('class').indexOf('t2') )
+        })
+
+    </script>
+</head>
+<body>
+<div id="test1" class="test t1 t2 t3">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+</div>
+<div id="test2" class="test">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+</div>
+</body>
+</html>

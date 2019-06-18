@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+</head>
+<body>
+<div id="d1" style="background-color:pink;width: 300px;height: 200px"></div>
+<script>
+    $(function () {
+
+        // var clickTimeout = {
+        //     _timeout: null,
+        //     set: function (fn) {
+        //         var that = this;
+        //         that.clear();
+        //         that._timeout = window.setTimeout(fn, 300);
+        //     },
+        //     clear: function () {
+        //         var that = this;
+        //         if (that._timeout) {
+        //             window.clearTimeout(that._timeout);
+        //         }
+        //     }
+        // };
+        //
+        // $('#d1').on('click',function () {
+        //
+        //     clickTimeout.set(function () {
+        //         console.log('click')
+        //     });
+        //
+        // })
+        // $('#d1').on('dblclick',function () {
+        //
+        //     clickTimeout.clear();
+        //     console.log('dblclick')
+        //
+        // })
+
+
+        var timer = null;
+
+        function clearTimer() {
+            if(timer){
+                clearTimeout(timer);
+            }
+        }
+
+        $('#d1').on('click',function () {
+
+            clearTimer();
+
+            timer = setTimeout(function () {
+                console.log('click')
+            },300)
+
+        })
+
+        $('#d1').on('dblclick',function () {
+
+            clearTimer();
+
+            console.log('dblclick')
+
+        })
+
+
+
+    })
+</script>
+</body>
+</html>

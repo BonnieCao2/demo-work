@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title9</title>
+</head>
+<body>
+<script>
+    var q1 = 'abcdefg'.substring(4)
+    console.log(q1)//efg
+
+    var a=b=10;
+    (function () {
+        var a=b=20
+    })()
+    console.log(b)//20
+
+    var a3=[1,2,3];
+    console.log(a3.join())//1,2,3
+
+    console.log(null==undefined)//true
+    console.log(null===undefined)//false
+    console.log(null==false)//false
+    console.log(NaN==NaN)//false
+
+    Promise.resolve(1)
+    .then((res => {
+        console.log(res)
+        return 2
+    }))
+    .catch((err => {
+        return 3
+    }))
+    .then((res) => {
+        console.log(res)
+    })
+    
+    var length = 6;
+    function fn() {
+        console.log(this.length);
+    }
+    var b = {
+        length: 3,
+        fn: function () {
+            fn();
+            arguments[0]();
+            fn.call(b,5);
+        }
+    }
+    b.fn(fn,10)
+
+    function a3(x) {
+        var tem=3;
+        function b(y) {
+            console.log(x+y+(++tem));
+        }
+        return b;
+    }
+    var b3 = a3(1);
+    b3(2);
+    b3(3);
+</script>
+</body>
+</html>

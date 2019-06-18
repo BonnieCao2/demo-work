@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>菜鸟教程(runoob.com)</title>
+    <style>
+        #div1
+        {
+            position: relative;
+            height: 200px;
+            width: 300px;
+            margin: 100px;
+            box-sizing: border;
+            border: 1px solid black;
+        }
+
+        #div2
+        {
+            width: 220px;
+            height: 100px;
+            position: absolute;
+            border: 1px solid black;
+            box-sizing: border;
+            background-color: red;
+            transform: rotate(90deg);/*transform: rotate(-90deg);*/
+            transform-origin: 50px 50px;/*transform-origin: 110px 110px;*/
+        }
+        /*注释：
+        旋转过后左上角不变：
+        rotate(90deg)时，transform-origin: div2.heigh/2,div2.heigh/2;
+        rotate(-90deg)时，transform-origin: div2.width/2,div2.width/2;
+        */
+    </style>
+</head>
+
+<body>
+
+<div id="div1">
+    <div id="div2">HELLO</div>
+</div>
+
+</body>
+</html>

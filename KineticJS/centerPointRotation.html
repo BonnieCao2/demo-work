@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="kinetic-v5.1.0.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+</head>
+<body>
+<style>
+    button{
+        width: 80px;
+        height: 30px;
+    }
+</style>
+<button id="btn1">增加</button>
+<button id="btn2">减少</button>
+
+<div id="container"></div>
+
+<script>
+
+    var stage = new Kinetic.Stage({
+        container: 'container',
+        width: 1920, height: 1080
+    });
+    var layer = new Kinetic.Layer();
+    stage.add(layer);
+
+    var x = 100,
+        y = 100,
+        width = 900,
+        height = 900,
+        angle = 45,
+        rectCenterPoint = {x: x+width/2, y: y+height/2}; // 矩形中心点
+
+    var rect = new Kinetic.Rect({
+        x: x,
+        y: y,
+        width: width,
+        height: height,
+        fill: 'pink'
+    });
+    var rect2 = new Kinetic.Rect({
+        x: x,
+        y: y,
+        width: width,
+        height: height,
+        // rotation: angle,
+        fill: 'red'
+    });
+
+    // rect2.x(rectCenterPoint.x).y(rectCenterPoint.y)
+    //     .setRotation(angle)
+    //     // .x(x).y(y)
+    //     .setOffset({
+    //         x: width/2,
+    //         y: height/2
+    //     })
+
+
+    layer.add(rect).add(rect2);
+
+
+    let scale = 0.5;
+
+    rect2.move({
+        x: width/2,
+        y: height/2
+    })
+    // .setRotation(angle)
+        .setScale({
+            x: 0.5,
+            y: 0.5
+        })
+        .setOffset({
+            x: width/2,
+            y: height/2
+        })
+
+
+    layer.draw();
+
+    $('#btn1').on('click',function () {
+        scale += 0.1;
+        // rect2.move({
+        //     x: width/2,
+        //     y: height/2
+        // }).setScale({
+        //     x: scale,
+        //     y: scale
+        // })
+        // .setOffset({
+        //     x: width/2,
+        //     y: height/2
+        // })
+
+        rect2.setScale({
+                x: scale,
+                y: scale
+            })
+        layer.draw();
+
+        console.log(rect2)
+    })
+    $('#btn2').on('click',function () {
+        scale -= 0.1;
+        rect2.setScale({
+            x: scale,
+            y: scale
+        })
+        layer.draw();
+
+        console.log(rect2)
+    })
+
+
+
+    /*按照中心点旋转*/
+    // var canvas = document.createElement('canvas');
+    // canvas.width = 500;
+    // canvas.height = 500;
+    // canvas.style.backgroundColor = '#ddd';
+    // document.body.appendChild(canvas);
+    //
+    // var ctx = canvas.getContext('2d');
+    // var x = 100,
+    //     y = 100,
+    //     width = 150,
+    //     height = 150,
+    //     angle = 90,
+    //     rectCenterPoint = {x: x+width/2, y: y+height/2}; // 矩形中心点
+    //
+    // // 旋转前(红色矩形)
+    // ctx.fillStyle = '#f00';
+    // ctx.fillRect(x, y, width, height);
+    //
+    // // 旋转后(绿色矩形)
+    // ctx.translate(rectCenterPoint.x, rectCenterPoint.y);
+    // ctx.rotate(angle);
+    // ctx.translate(-rectCenterPoint.x, -rectCenterPoint.y);
+    // ctx.fillStyle = '#690';
+    // ctx.fillRect(x, y, width, height);
+
+    /*按照中心点缩放*/
+    // var canvas = document.createElement('canvas');
+    // canvas.width = 500;
+    // canvas.height = 500;
+    // canvas.style.backgroundColor = '#ddd';
+    // document.body.appendChild(canvas);
+    //
+    // var ctx = canvas.getContext('2d');
+    // var x = 100,
+    //     y = 100,
+    //     width = 150,
+    //     height = 150,
+    //     rectCenterPoint = {x: x+width/2, y: y+height/2}, // 矩形中心点
+    //     scaleX = 0.5,
+    //     scaleY = 0.4;
+    //
+    // // 缩放前(红色矩形)
+    // ctx.fillStyle = '#f00';
+    // ctx.fillRect(x, y, width, height);
+    //
+    // // 缩放后(绿色矩形)
+    // ctx.translate(rectCenterPoint.x*(1-scaleX), rectCenterPoint.y*(1-scaleY));
+    // ctx.scale(scaleX, scaleY);
+    // ctx.fillStyle = '#690';
+    // ctx.fillRect(x, y, width, height);
+</script>
+</body>
+</html>

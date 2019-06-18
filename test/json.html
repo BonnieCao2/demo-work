@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    /*var a;
+    a.toString();
+    console.log(a);*/
+
+    var data = [{
+        id: 1,
+        name: '上海',
+        spell: 'shanghai'
+    }, {
+        id: 2,
+        name: '南京',
+        spell: 'nanjin'
+    }, {
+        "id": 56,
+        "spell": "aba",
+        "name": "阿坝"
+    }, {
+        "id": 57,
+        "spell": "akesu",
+        "name": "阿克苏"
+    }]
+
+
+    /*几个月后。。。*/
+    let obj = {}
+    for(let item of data){
+        let index = item.spell.substring(0,1);
+        if(!obj[index]){
+            obj[index] = [item];
+        }else{
+            obj[index].push(item);
+        }
+    }
+    console.log(obj);
+
+
+
+
+    /*几个月前。。。*/
+    // //去重
+    // function initArr(arr) {
+    //     var res = [];
+    //     for (var i = 0; i < arr.length; i++) {
+    //         if (res.indexOf(arr[i]) == -1) {
+    //             res.push(arr[i]);
+    //         }
+    //     }
+    //     return res
+    // }
+    //
+    // //返回新的key值数组
+    // function letterArr(data) {
+    //     var letterArr = [];
+    //     for (var i = 0; i < data.length; i++) {
+    //         var spell = data[i].spell;
+    //         var letter = spell.substring(0, 1);
+    //         // console.log(letter);
+    //
+    //         letterArr.push(letter);
+    //         //去重
+    //         letterArr = initArr(letterArr);
+    //         //排序
+    //         letterArr.sort();
+    //     }
+    //     return letterArr;
+    // }
+    //
+    // // console.log(letterArr(data));
+    //
+    //
+    // //返回新的cities对于的value数组
+    // function citiValueArr(data, key) {
+    //     var cityValueArrSigle = [];
+    //     var letterArrNew = letterArr(data);
+    //     for (var i = 0; i < data.length; i++) {
+    //         var spell = data[i].spell;
+    //         var letter = spell.substring(0, 1);
+    //         if (letter == key) {
+    //             cityValueArrSigle.push(data[i])
+    //         }
+    //     }
+    //     return cityValueArrSigle
+    // }
+    //
+    // // console.log(citiValueArr(data,'s'));
+    //
+    //
+    // function cities(data) {
+    //     var cities = {};
+    //     var cityValueArr = [];
+    //     var letterArrNew = letterArr(data);
+    //     letterArrNew.forEach(function (value, index) {
+    //         cities[value] = citiValueArr(data, value);
+    //     })
+    //
+    //     for (var city in cities) {
+    //
+    //         city.toUpperCase();
+    //         console.log(city);
+    //     }
+    //
+    //     return cities;
+    // }
+    //
+    // console.log(cities(data));
+
+
+</script>
+</body>
+</html>

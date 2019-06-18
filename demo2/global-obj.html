@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    let coldBayYObj = {
+        14: 427.1,
+        15: 427.1,
+        30: 411.1,
+        31: 403.1,
+        46: 495.1,
+        47: 495.1
+    }
+
+    let coldBayYArr = [{
+        "boxNo": "14",
+        "coldBayY": 100
+    }, {
+        "boxNo": "15",
+        "coldBayY": 427.1
+    }, {
+        "boxNo": "30",
+        "coldBayY": 411.1
+    }, {
+        "boxNo": "31",
+        "coldBayY": 403.1
+    }, {
+        "boxNo": "46",
+        "coldBayY": 495.1
+    }, {
+        "boxNo": "47",
+        "coldBayY": 495.1
+    }]
+
+
+
+    let a = coldBayYObj[14];
+
+    coldBayYObj[14]=100;
+
+    // console.log(a)//427.1
+    // console.log(coldBayYObj[14])//100
+    // console.log(a)//427.1
+
+    let obj2 = new Object();
+        obj2  = coldBayYObj;
+
+
+    for(let i in obj2){
+        obj2[i] = 222;
+    }
+    // console.log(obj2)
+    // console.log(coldBayYObj)
+
+
+    let arr2 = new Array();
+    arr2 = coldBayYArr;
+
+    for(let item of arr2){
+        item["coldBayY"] = 111
+    }
+    console.log(arr2)
+    console.log(coldBayYArr)
+
+</script>
+</body>
+</html>

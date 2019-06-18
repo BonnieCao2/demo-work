@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="kinetic-v5.1.0.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+</head>
+<body>
+<div id="container"></div>
+<script>
+    $(function () {
+        let stage = new Kinetic.Stage({
+                container: 'container',
+                width: 1920,
+                height: 800,
+            }),
+            layer = new Kinetic.Layer(),
+            group1 = new Kinetic.Group({
+                id: 'G1'
+            }),
+            group2 = new Kinetic.Group({
+                id: 'G2'
+            });
+
+        stage.add(layer);
+        layer.add(group1).add(group2);
+
+        let rect = new Kinetic.Rect({
+                id: 'rect',
+                x: 200,
+                y: 200,
+                width: 200,
+                height: 200,
+                fill: 'blue',
+                stroke: '#333',
+                strokeWidth: 3
+            }),
+            circle = new Kinetic.Circle({
+                id: 'circle',
+                x: 320,
+                y: 320,
+                radius: 100,
+                fill: 'red',
+                stroke: '#333',
+                strokeWidth: 3
+            })
+
+        group1.add(rect);
+        group2.add(circle);
+
+        group1.moveToTop();
+        layer.add(group1);
+        layer.add(group2);
+
+        stage.batchDraw();
+        console.log(layer,'layer')
+
+        /*
+        * 注：如果之前layer  add过 组，再次add时与设Zindex效果一样会覆盖之前的组，会放在layer.children数组的最后跟append效果一样（删除原本位置插在数组最后）
+        * 故，建议add方法放最前，之后全部调用ZIndex或moveToTop改变图层。（之前add过的图层之后连续add会报错只能一个个add）
+        * */
+    })
+</script>
+</body>
+</html>

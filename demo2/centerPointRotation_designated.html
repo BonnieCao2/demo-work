@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="kinetic-v5.1.0.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-mousewheel/3.1.13/jquery.mousewheel.js"></script>
+</head>
+<body>
+<style>
+    body{
+        margin: 0;
+        padding: 0;
+        background-color: #fff;
+        width: 100%;
+    }
+    button{
+        width: 80px;
+        height: 30px;
+    }
+    #range{
+        width: 800px;
+        height: 30px;
+        background-color: #333;
+        margin-left: 20%;
+        margin-top: 30px;
+        position: absolute;
+        z-index: 1;
+    }
+</style>
+<button id="btn1" style="display: none">增加</button>
+<button id="btn2" style="display: none">减少</button>
+
+<input id="range" type="range" min="1" max="5" value="1">
+
+<div id="container" style="border: 1px solid #e0e0e0; width: 1920px; height: 1080px;"></div>
+
+<script>
+
+    var stage = new Kinetic.Stage({
+        container: 'container',
+        width: 1920,
+        height: 1080,
+        draggable : true,
+    });
+    var layer = new Kinetic.Layer({
+
+    });
+    stage.add(layer);
+
+    var imgX = 0,
+        imgY = 0,
+        width = 1920,
+        height = 1080,
+        angle = 45,
+        rectCenterPoint = {x: imgX+width/2, y: imgY+height/2}; // 矩形中心点
+
+    let imgObj = new Image(),img;
+    imgObj.src = './main.png';
+
+    imgObj.onload = function (ev) {
+        img = new Kinetic.Image({
+            x: imgX,
+            y: imgY,
+            width: width,
+            height: height,
+            // rotation: angle,
+            // fill: 'red',
+            image: imgObj
+        });
+        layer.add(img);
+        layer.draw();
+
+        // stage.save()
+    }
+
+    let originX = stage.getX(),
+        originY = stage.getY();
+
+console.log('originX: '+originX, 'originY: '+originY,'init',stage)
+
+    // stage.restore()
+
+    let level = 1;
+
+
+    function windowToCanvas(canvas, clientX, clientY) {
+        var bbox = canvas.getBoundingClientRect();
+
+        let pos = {
+            x: clientX - (bbox.width - canvas.width) / 2,// - bbox.left
+            y: clientY - (bbox.height - canvas.height) / 2// - bbox.top
+        };
+
+        console.log(bbox,'------dom------',pos)
+
+        return pos;
+    }
+
+    $('#container').mousewheel(function(event, delta) {
+
+        console.log(event)
+
+        if(delta > 0){
+            level += 0.5;
+        }else{
+            level -= 0.5;
+        }
+
+
+        let  clientX = event.clientX,
+            clientX = event.clientY;
+
+        let realX = clientX - originX,
+            realY = clientY - originY;
+
+        console.log(originX,originY)
+
+        // let canvas = document.getElementById('container');
+        // canvas.width = 1920;
+        // canvas.height = 1080;
+        // let pos = windowToCanvas(canvas, clientX, clientY)
+        //
+        // imgX = imgX * scale - pos.x;
+        // imgY = imgY * scale - pos.y;
+
+        // stage
+        //     .x(0).y(0)
+        //     .offset({
+        //         x: 0,
+        //         y: 0
+        //     }).setScale({
+        //     x: level,
+        //     y: level
+        // })
+
+        stage
+            // .x(clientX).y(clientY)
+            // .offset({
+            //     x: clientX,
+            //     y: clientY
+            // })
+            .x(realX).y(realY)
+            // .offset({
+            //     x: realX,
+            //     y: realY
+            // })
+            .setScale({
+            x: level,
+            y: level
+        })
+
+        // if(originX > 0 || originX < 0){
+        //     stage
+        //     // .x(originX).y(originY)
+        //     .offset({
+        //         x: originX,
+        //         y: originY
+        //     })
+        // }
+
+        layer.draw();
+
+        // console.log(pos,img)
+    })
+
+
+
+    //拖拽事件
+    let dragStatus = false,
+        timer = null;
+    stage.on("dragstart", function (evt) {
+        // 响应代码
+        dragStatus = true;
+        // console.log('dragstart',evt)
+    })
+
+    stage.on("dragmove", function (evt) {
+        // 响应代码
+        // console.log('dragmove',evt)
+
+        // stage.off("dragstart")
+
+        if(dragStatus){
+            if(timer){
+                clearTimeout(timer)
+            }
+            timer = setTimeout(() => {
+                stage.on("dragstart")
+        },16)
+        }
+    })
+
+    stage.on("dragend", function (evt) {
+        // 响应代码
+        dragStatus = false;
+        stage.off("dragstart")
+        // console.log('dragend',evt)
+
+        originX = stage.getX();
+        originY = stage.getY();
+
+        console.log('originX: '+originX, 'originY: '+originY,'dragend',stage)
+    })
+
+
+
+
+
+    $("#range").on('change',function () {
+        scale = $(this).val();
+
+
+        // return {
+        //     x: event.clientX  - (dom.width - canvas.width) / 2,
+        //     y: event.clientX  - (dom.height - canvas.height) / 2
+        // };
+        // imgScale *= 2;
+        // imgX = imgX * 2 - pos.x;
+        // imgY = imgY * 2 - pos.y;
+
+
+        img.setScale({
+                x: scale,
+                y: scale
+            })
+
+        layer.draw();
+
+        console.log(rect2)
+    })
+
+
+
+
+
+</script>
+</body>
+</html>

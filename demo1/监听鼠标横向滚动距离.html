@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>-->
+    <script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+    <style>
+        #div{
+            width: 40%;
+            height: 500px;
+            background-color: pink;
+            /*overflow: auto;*/
+        }
+        #content{
+            width: 100%;
+            height: 100%;
+        }
+        #h{
+            width: 200px;
+            height: 90px;
+            font-size: 18px;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            var content=document.getElementById("content").contentWindow
+            // var content=$("#content").contents().find("#h");
+
+            // console.log(content)
+
+            $("button").click(function(){
+                $(window.frames["content"].document).scrollTop("10");
+            });
+
+            var a =$(window.frames["content"].document).scrollTop();
+            // console.log(a)
+
+           /* var b = document.getElementById('content').contentWindow.document.body.scrollTop;
+            var c= document.getElementById('content').contentWindow.document.body.scrollHeight;
+            console.log(b)
+            console.log(c)*/
+
+            // content.onmousemove = function (ev) {
+            //     var oEvent = ev || event;
+            //     var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            //     var scrollLeft = content.document.documentElement.scrollLeft || content.document.body.scrollLeft;
+            //     console.log(scrollLeft)
+            // }
+
+
+
+
+        }
+    </script>
+
+    <!--<script>
+        var scrollFunc = function (e) {
+            var direct = 0;
+            e = e || window.event;
+            if (e.wheelDelta) {  //判断浏览器IE，谷歌滑轮事件
+                if (e.wheelDelta > 0) { //当滑轮向上滚动时
+                    alert("滑轮向上滚动");
+                }
+                if (e.wheelDelta < 0) { //当滑轮向下滚动时
+                    alert("滑轮向下滚动");
+                }
+            } else if (e.detail) {  //Firefox滑轮事件
+                if (e.detail> 0) { //当滑轮向上滚动时
+                    alert("滑轮向上滚动");
+                }
+                if (e.detail< 0) { //当滑轮向下滚动时
+                    alert("滑轮向下滚动");
+                }
+            }
+            ScrollText(direct);
+        }
+        //给页面绑定滑轮滚动事件
+        if (document.addEventListener) {
+            document.addEventListener('DOMMouseScroll', scrollFunc, false);
+        }
+        //滚动滑轮触发scrollFunc方法
+        window.onmousewheel = document.onmousewheel = scrollFunc;
+    </script>-->
+</head>
+<body>
+<script>
+    $(function () {
+        // var m = document.getElementById("content").document.body.scrollTop = "500";
+        var q = $("#content").contents().find(".search-warp")
+        console.log(q)
+
+        var content=document.getElementById("content").contentWindow
+        $(content).scroll(function(){
+            console.log("scroll");
+        });
+    })
+
+</script>
+<div id="div">
+    <iframe name="imooc" src="./" id="content">
+        <h1 id="h">aaaaa</h1>
+
+    </iframe>
+</div>
+<button id="button">clickme</button>
+</body>
+</html>

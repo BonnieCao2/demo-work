@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+</head>
+<body>
+<ul>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+</ul>
+<script>
+
+    t1()
+    function t1() {
+        /*1*/
+        // if(true){
+        //     console.log('111');
+        //     return;
+        // }
+        // console.log('222')
+        let i = 0;
+
+        $('ul>li').each(function () {
+            i++;
+            console.log(i)
+            return;
+        })
+        //结果：1 2 3 4 5
+    }
+
+
+
+</script>
+</body>
+</html>

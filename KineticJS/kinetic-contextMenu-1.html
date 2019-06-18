@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.2.3/jquery.contextMenu.css" rel="stylesheet"/>
+
+<!--<script src="https://cdn.rawgit.com/konvajs/konva/1.0.2/konva.min.js"></script>-->
+<script src="https://cdn.bootcss.com/konva/1.0.2/konva.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.2.3/jquery.ui.position.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.2.3/jquery.contextMenu.min.js"></script>
+
+<div id="container" class="tester"></div>
+
+<script>
+    var stage = new Konva.Stage({
+        container: 'container',
+        x: 10,
+        y: 10,
+        width: 800,
+        height: 200
+    });
+
+    var layer = new Konva.Layer();
+
+
+    var Igpk = new Konva.Rect({
+        id:'igpk',
+        x: 148,
+        y: 32,
+        width: 62,
+        height: 118,
+        fill: 'gold',
+        stroke: 'black',
+        strokeWidth: 2,
+        opacity: 1,
+        draggable: false
+    });
+
+    var Igpktext = new Konva.Text({
+        x: 148 + 1,
+        y: 32,
+        text: 'iGPK',
+        fontSize: 15,
+        fontFamily: 'Calibri',
+        fill: 'black'
+
+    });
+
+    var IgpkGroup = new Konva.Group({});
+
+    IgpkGroup.add(Igpk);
+    IgpkGroup.add(Igpktext);
+
+    var Requestone = new Konva.Rect({
+        id: 'myRect',
+        x: 219,
+        y: 28,
+        width: 116,
+        height: 118,
+        fill: '#87cefa',
+        stroke: 'black',
+        strokeWidth: 2,
+        opacity: 1,
+        draggable: false
+    });
+
+
+    var Requestonetext = new Konva.Text({
+        x: 219 + 1,
+        y: 28,
+        text: 'Request One',
+        fontSize: 15,
+        fontFamily: 'Calibri',
+        fill: 'black'
+
+    });
+
+    var RequestoneGroup = new Konva.Group({draggable:true});
+
+    RequestoneGroup.add(Requestone);
+    RequestoneGroup.add(Requestonetext);
+
+
+    document.querySelector('#container').addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var pos = stage.getPointerPosition();
+        var shape = layer.getIntersection(pos,'Group');
+        // clear all menus, if any
+        $.contextMenu('destroy');
+        if (shape === IgpkGroup) {
+            $.contextMenu({
+                selector: '#container',
+                autoHide: true,
+                reposition: false,
+                items: {
+                    "IgpkGroup": {
+                        name: "IgpkGroup",icon: "edit"},
+                    "edit": {name: "Edit", icon: "edit"},
+                    "cut": {name: "Cut", icon: "cut"},
+                    copy: {name: "Copy", icon: "copy"},
+                    "paste": {name: "Paste", icon: "paste"},
+                    "delete": {name: "Delete", icon: "delete"},
+                    "sep1": "---------",
+                    "quit": {name: "Quit", icon: function(){
+                            return 'context-menu-icon context-menu-icon-quit';
+                        }}
+                }
+            });
+            $('#container').contextMenu({x:pos.x,y:pos.y});
+        }
+        else if (shape === RequestoneGroup) {
+            $.contextMenu({
+                selector: '#container',
+                autoHide: true,
+                reposition: false,
+                items: {
+                    "RequestoneGroup": {
+                        name: "RequestoneGroup",
+                        icon: "edit"
+                    }
+                }
+            });
+            $('#container').contextMenu({x:pos.x,y:pos.y});
+
+        }
+    });
+
+    layer.add(IgpkGroup);
+    layer.add(RequestoneGroup);
+    stage.add(layer);
+</script>
+</body>
+</html>

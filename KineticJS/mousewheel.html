@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery 鼠标滚轮插件 mousewheel</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+        .mousewheel {
+            background: green;
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+<div class="mousewheel"></div>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+<script src="https://cdn.bootcss.com/jquery-mousewheel/3.1.13/jquery.mousewheel.js"></script>
+<script src="kinetic-v5.1.0.min.js"></script>
+<script type="text/javascript">
+    $('.mousewheel').bind('mousewheel', function(event, delta) {
+        console.log(event,'event',delta,'delta')
+        var dir = delta > 0 ? 'Up' : 'Down';
+        if (dir == 'Up') {
+            $('.mousewheel').text('Up');
+        } else {
+            $('.mousewheel').text('Down');
+        }
+    });
+</script>
+</body>
+</html>

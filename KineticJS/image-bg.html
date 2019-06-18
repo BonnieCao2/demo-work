@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="kinetic-v5.1.0.min.js"></script>
+</head>
+<body>
+<div id="container"></div>
+<script>
+    function draw(image) {
+        var stage = new Kinetic.Stage({
+            container: "container",
+            width: 600,
+            height: 400
+        });
+        var layer = new Kinetic.Layer();
+        //创建第一个矩形config参数
+        var config1 = {
+            x: 50,
+            y: 100,
+            width: 180,
+            height: 180,
+            //填充图像
+            fill: {
+                image: image,
+                offset: {
+                    x: 0,
+                    y: 0
+                }
+            }
+        };
+        var rect1 = new Kinetic.Rect(config1);
+        //创建第二个矩形config参数
+        var config2 = {
+            x: 350,
+            y: 100,
+            width: 180,
+            height: 180,
+            //填充图像，并将填充图像向右下移动50个像素
+            fill: {
+                image: image,
+                offset: {
+                    x: 0,
+                    y: 0
+                }
+            }
+        };
+        var rect2 = new Kinetic.Rect(config2);
+        //将填充图像向左上移动50个像素
+        rect2.setFill({
+            //image : image,
+            offset: {
+                x: -50,
+                y: -50
+            }
+        });
+        layer.add(rect1);
+        layer.add(rect2);
+        stage.add(layer);
+    }
+
+    //没用
+    /*window.onload = function () {
+        var image = new Image();
+        image.onload = function () {
+            draw(image);
+        };
+        image.src = "./a.png";
+    };*/
+
+    window.onload = function () {
+        var imageObj = new Image();
+        imageObj.src = './a.png';
+        imageObj.onload = function () {
+            var stage = new Kinetic.Stage({
+                container: 'container',
+                width: 600,
+                height: 400
+            });
+            var layer = new Kinetic.Layer();
+            var image = new Kinetic.Image({
+                    x : 0,
+                    y : 0,
+                    image : imageObj,
+                    width : 200,
+                    height : 200,
+                    // setZIndex : 1,
+                });
+            layer.add(image);
+
+            stage.setScale({
+                x : 2,
+                y : 2
+            });
+            stage.add(layer);
+        };
+    };
+</script>
+
+</body>
+</html>

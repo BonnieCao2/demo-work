@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var rowCengNo = {};
+    for(var n = 1;n<=10;n++){
+        eval("rowCengNo.row"+n+"=0");//rowCengNo = {row1: '0',row2: '0',row3: '0',...}
+        // console.log(eval("rowCengNo.row"+n+"=0"),'eval1')
+    }
+    var rowNo = -1;
+    for(var j = 0;j<10;j++){
+        rowNo = rowNo + 2;
+        rowNo = rowNo + '';
+        eval("rowCengNo.row"+rowNo+"++");
+        console.log(eval("rowCengNo.row"+rowNo+"++"),'eval')
+
+        var colorNum = eval("rowCengNo.row"+rowNo+"");//1,2,3,4,1,2,3,4
+        // console.log(eval("rowCengNo.row"+rowNo+""),'eval3')
+
+        rowNo = parseInt(rowNo)
+
+        // if(rowNo>9){
+        //    rowNo = 9;
+        // }
+
+    }
+</script>
+</body>
+</html>

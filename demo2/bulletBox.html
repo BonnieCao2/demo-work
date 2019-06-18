@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="miniui.css">
+    <!--<script src="jquery-1.8.0.js"></script>-->
+    <script src="boot.js"></script>
+</head>
+<body>
+<script>
+    mini.open({
+        url: bootPATH + "./SelectGridWindow.html",
+        title: "选择列表",
+        width: 650,
+        height: 380,
+        ondestroy: function (action) {
+            if (action == "ok") {
+                var iframe = this.getIFrameEl();
+                var data = iframe.contentWindow.GetData();
+                data = mini.clone(data);    //必须
+
+
+
+                btnEdit.setValue(data.id);
+                btnEdit.setText(data.name);
+            }
+        }
+    });
+</script>
+</body>
+</html>

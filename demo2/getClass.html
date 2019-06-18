@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-1.8.0.js"></script>
+</head>
+<body>
+<div class="abc 65"></div>
+
+<script>
+    $(function () {
+        let classname = $('.abc').attr('class')
+        let length = classname.length,
+            index = length - 2 -1;
+        console.log(classname.substring(index,length))
+
+        if(true){
+            console.log('111111')
+            return;
+        }
+        console.log('22222')
+    })
+
+</script>
+</body>
+</html>

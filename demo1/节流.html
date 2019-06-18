@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    let status,
+        timer = null;
+    //mousedown
+    status=true
+
+    //mousemove
+    if(status){
+        if(timer){
+            clearTimeout(timer);
+        }
+        timer = setTimeout(() => {
+            //do something
+        },16)
+    }
+
+    //mouseup
+    status=false
+</script>
+</body>
+</html>

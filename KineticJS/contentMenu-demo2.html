@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./jquery.contextMenu.css">
+    <script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+    <script src="kinetic-v5.1.0.min.js"></script>
+    <script src="jquery.contextMenu.js"></script>
+    <script src="jquery.ui.position.js"></script>
+
+    <style>
+        button {
+            width: 100px;
+            height: 50px;
+        }
+
+        .context-menu-list, .context-menu-item {
+            background: linear-gradient(90deg, #F1F1F1 13%, #F5F5F5 13%);
+        }
+
+        .context-menu-hover {
+            color: #6CA6CD !important;
+        }
+    </style>
+</head>
+<body>
+
+<div id="draw_div"></div>
+
+<!--<input type="hidden" id="input">-->
+
+<button id="btn">btn</button>
+
+<menu id="ul" type="context" class="show">
+    <menuitem id="li1" label="ajay 56"></menuitem><!--onclick="alert('aa')"-->
+    <menuitem label="vijay 1234"></menuitem>
+</menu>
+
+<menu id="html5polyfill" type="context" style="display:none">
+    <command label="船舶靠泊信息"></command>
+    <command label="船舶档案资料"></command>
+    <hr>
+    <command label="卸船堆存计划"></command>
+    <command label="出口箱堆存计划（上海快航）"></command>
+    <menu label="船舶作业染色">
+        <command label="进口堆存计划染色" onclick="alert('进口堆存计划染色')"></command>
+        <command label="出口堆存计划染色"></command>
+        <command label="进口箱染色"></command>
+        <command label="出口箱染色"></command>
+        <command label="装船任务染色"></command>
+    </menu>
+    <hr>
+    <command label="已发装、卸船指令列表"></command>
+    <hr>
+    <command label="已发装、卸船船图箱列表"></command>
+    <command label="装卸船箱量和效率"></command>
+    <command label="作业路集卡"></command>
+    <menu label="任务染色">
+        <command label="当前箱区内的作业任务染色"></command>
+        <menu label="预约信息染色">
+            <command label="进箱预约箱区"></command>
+            <command label="提箱预约"></command>
+        </menu>
+        <command label="进出箱及卸船箱预占信息"></command>
+    </menu>
+</menu>
+
+<script>
+    $(function () {
+
+        var stage = new Kinetic.Stage({
+            container: 'draw_div',
+            width: 1600,
+            height: 400,
+            // draggable: true,
+        });
+        var layer = new Kinetic.Layer();
+
+        let boatConetenMenuIdArr = [];
+        // document.querySelector('#draw_div').addEventListener("contextmenu", dramBoatContentMenu);
+
+        // $('#draw_div').contextMenu();
+
+        function dramBoatContentMenu() {
+            console.log('-----------------------html clicked-------------------')
+
+            $('#context-menu-layer').remove();
+            $('.context-menu-list.context-menu-root').hide();
+            // hide any open menus
+            $('#context-menu-layer').trigger('mousedown');
+
+            let container = '#draw_div';
+            let pos = stage.getPointerPosition(),
+                shape = layer.getIntersection(pos, 'Group');
+
+            // clear all menus, if any
+            $.contextMenu('destroy');
+
+            console.log(shape, 'shape ')
+            // console.log(boat,'boat')
+
+            if (shape && shape.attrs.id) {
+                console.log(shape.attrs.id, 'shape.attrs.id', boatConetenMenuIdArr, 'boatConetenMenuIdArr')
+                let id = shape.attrs.id;
+                if (boatConetenMenuIdArr.indexOf(id) != -1) {
+                    $.contextMenu({
+                        // selector: container,
+                        // trigger: 'contextmenu:hide',
+                        autoHide: true,
+                        reposition: false,
+                        items: $.contextMenu.fromMenu($('#html5polyfill'))
+                    });
+                    // $(container).contextMenu({x: pos.x, y: pos.y});
+
+                    // $(container).contextMenu('destroy');
+                    // $.contextMenu('update');
+                }
+            }
+        }
+
+        for (let i = 0; i < 3; i++) {
+            //创建一个要加进组中的矩形
+            var rect = new Kinetic.Rect({
+                id: i + 1,
+                x: 250 * (i + 1),
+                y: 50,
+                width: 200,
+                height: 200,
+                fill: 'pink'
+            }).on("click", function (e) {
+                //3右击 1是左击
+                if (e.evt.which == 3) {
+                    disableContextMenu(true);
+                    console.log('-----------------------canvas clicked---------------------------')
+                    console.log(this, 'this')
+                    // if (this && this.attrs.id) {
+                    //     console.log(this.attrs.id, 'this.attrs.id')
+                    //     if (boatConetenMenuIdArr.indexOf(this.attrs.id) == -1) {
+                    //         boatConetenMenuIdArr.push(this.attrs.id)
+                    //     }
+                    // }
+
+
+
+                    $('#context-menu-layer').remove();
+                    $('.context-menu-list.context-menu-root').remove();
+
+                    let container = '#input';
+                    let pos = stage.getPointerPosition(),
+                        shape = layer.getIntersection(pos, 'Group');
+
+                    disableContextMenu(true);
+                    $.contextMenu({
+                        selector: container,
+                        autoHide: false,
+                        reposition: false,
+                        items: $.contextMenu.fromMenu($('#html5polyfill'))
+                    });
+
+                    $('.context-menu-list.context-menu-root').css({
+                        'left': pos.x + 'px',
+                        'top': pos.y + 'px'
+                    }).show();
+
+                    // $(container).contextMenu({
+                    //     x: pos.x,
+                    //     y: pos.y
+                    // });
+                    //
+                    // $(container).off('contextmenu')
+                    // document.querySelector(container).removeEventListener("contextmenu", dramBoatContentMenu);
+                    // document.querySelector(container).addEventListener("contextmenu", dramBoatContentMenu);
+
+                }
+            });
+
+            layer.add(rect);
+        }
+        stage.add(layer);
+        stage.batchDraw();
+
+
+        // $(container).off("contextmenu").on("contextmenu", function (e) {
+        //     e.preventDefault();
+        //     e.stopPropagation();
+        //     dramBoatContentMenu()
+        // })
+
+
+        function disableContextMenu(boolDisable, fn) {
+            if (boolDisable) {
+                $(document).contextmenu(function (e) {
+                    if (fn !== undefined) {
+                        return fn(e);
+                    } else {
+                        return false;
+                    }
+                });
+            } else {
+                $(document).prop("oncontextmenu", null).off("contextmenu");
+            }
+        }
+
+
+        // $.contextMenu({
+        //     selector: '#btn',
+        //     items: $.contextMenu.fromMenu($('#html5polyfill')),
+        //
+        //
+        //
+        //     // items: {
+        //     //     "edit": {name: "Edit"},
+        //     //     "cut": {name: "Cut"},
+        //     //     "copy": {name: "Copy"},
+        //     //     "paste": {name: "Paste"},
+        //     //     "delete": {name: "Delete"},
+        //     //     "sep1": "---------",
+        //     //     "quit     >": {name: "Quit"},
+        //     //     "fold1": {
+        //     //         "name": "Sub group",
+        //     //         "items": {
+        //     //             "fold1-key1": {"name": "Foo bar"},
+        //     //             "fold2": {
+        //     //                 "name": "Sub group 2",
+        //     //                 "items": {
+        //     //                     "fold2-key1": {"name": "alpha"},
+        //     //                     "fold2-key2": {"name": "bravo"},
+        //     //                     "fold2-key3": {"name": "charlie"}
+        //     //                 }
+        //     //             },
+        //     //             "fold1-key3": {"name": "delta"}
+        //     //         }
+        //     //     },
+        //     //     "fold1a": {
+        //     //         "name": "Other group",
+        //     //         "items": {
+        //     //             "fold1a-key1": {"name": "echo"},
+        //     //             "fold1a-key2": {"name": "foxtrot"},
+        //     //             "fold1a-key3": {"name": "golf"}
+        //     //         }
+        //     //     }
+        //     // },
+        //     // callback: function(key, options) {
+        //     //     console.log(options,'options    ',key,'key')
+        //     //     var m = key + " " + $(this).text();
+        //     //     // window.console && console.log(m);
+        //     // },
+        //     // bindings: {
+        //     //
+        //     // },
+        // })
+
+
+    });
+
+</script>
+</body>
+</html>

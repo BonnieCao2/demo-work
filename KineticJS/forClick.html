@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="kinetic-v5.1.0.min.js"></script>
+</head>
+<body>
+<div id='container'></div>
+<script>
+    window.onload = function () {
+        var stage = new Kinetic.Stage({
+            container: 'container',
+            width: 1920,
+            height: 800,
+            // draggable: true,
+        });
+        var layer = new Kinetic.Layer();
+        var group = new Kinetic.Group();
+
+        layer.add(group);
+        stage.add(layer);
+        stage.draw();
+
+
+        for(let i=0; i<=85; i++){
+            var rect = new Kinetic.Rect({
+                x: 30 + i*30,
+                y: 200,
+                width: 100,
+                height: 100,
+                stroke: "#999",
+                strokeWidth: 1,
+                // draggable: true,
+                // fill: 'blue'
+            })
+
+            rect.off('click').on('click', function(box) {
+                alert(i)
+                // standStyle=box.target.attrs.yaacraft;
+                // boxNum =box.target.attrs.areaId;
+                // var bayWay=box.target.attrs.yaabayway;
+                // var openUrl = sourceRoot +"/overView/yardBox_detail.html?standStyle=" + standStyle + "&boxNum="+boxNum + "&bayWay="+bayWay;
+                // window.parent.openMenuByChild("","",openUrl,"轨道吊任务列表");
+                // return;
+            })
+
+            group.add(rect);
+        }
+        layer.draw();
+
+    };
+</script>
+</body>
+</html>

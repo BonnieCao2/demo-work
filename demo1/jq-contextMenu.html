@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./jquery.contextMenu.css">
+    <script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+    <script src="jquery.contextMenu.js"></script>
+    <script src="jquery.ui.position.js"></script>
+
+    <style>
+        .context-menu-list{
+            border: 1px solid #487A9C;
+        }
+        .context-menu-list, .context-menu-item {
+            /*background: linear-gradient(90deg, #F1F1F1 13%, #F5F5F5 13%);*/
+            background-color: #333;
+            color: #fff;
+        }
+
+        .context-menu-hover {
+            color: #fff !important;
+            background-color: #333 !important;
+        }
+    </style>
+</head>
+<body>
+
+<div id="div1">
+    <div id="menu1" style="width: 200px;height: 100px;background: #5a72f8;position: absolute;top: 1200px">
+
+    </div>
+
+
+    <menu id="html5polyfill" type="context" style="display:none">
+        <command label="船舶靠泊信息"></command>
+        <command label="船舶档案资料"></command>
+        <command label="卸船堆存计划"></command>
+        <command label="出口箱堆存计划（上海快航）"></command>
+        <command label="已发装、卸船指令列表"></command>
+        <command label="已发装、卸船船图箱列表"></command>
+        <command label="装卸船箱量和效率"></command>
+        <command label="作业路集卡"></command>
+    </menu>
+</div>
+
+
+
+<script>
+$(function () {
+    // $('#menu1').on('contextmenu',function () {
+    //     $.contextMenu({
+    //         selector: '#div1',
+    //         // trigger: 'contextmenu:hide',
+    //         // autoHide: true,
+    //         reposition: false,
+    //         items: $.contextMenu.fromMenu($('#html5polyfill'))
+    //     });
+    // })
+
+    $('#div1').contextMenu({
+        selector: '#menu1',
+        callback: function(key, options) {
+            var m = "clicked: " + key + " on " + $(this).text();
+            window.console && console.log(m) || alert(m);
+        },
+        items: {
+            "edit": {name: "Edit"},
+            "cut": {name: "Cut"},
+            "copy": {name: "Copy"},
+            "paste": {name: "Paste"},
+            "delete": {name: "Delete"},
+            "quit": {name: "Quit" }
+        }
+    });
+})
+</script>
+</body>
+</html>

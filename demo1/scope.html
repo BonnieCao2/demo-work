@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var a  = [1,2,3,4,5]
+
+    function f() {
+        function compare(property){
+            return function(a,b){
+                var value1 = a[property];
+                var value2 = b[property];
+                return value2 - value1;
+            }
+        }
+
+        function sortNumber(a,b)
+        {
+            // return a - b //升序
+            return b - a//降序
+        }
+
+        let b = a;
+        b.sort(sortNumber);
+        console.log(b,'b');
+        console.log(a,'a');
+    }
+    f();
+</script>
+</body>
+</html>

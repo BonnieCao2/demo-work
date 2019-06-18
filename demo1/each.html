@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+</head>
+<body>
+<script>
+    var boxLocation = "012345";
+    var boxLocBay = boxLocation.substring(0, 2);
+    var boxLocR = boxLocation.substring(2, 6);
+    var boxLocation2 = boxLocBay - 1 + "" + boxLocR;
+    // console.log(boxLocation,"boxLocation")
+    // console.log(boxLocation2,"boxLocation2")
+
+
+    var bitmap_id = "bitmap01";
+    var bitmap_id_num = bitmap_id.substring(6, 8);
+    // console.log(bitmap_id_num,"bitmap_id_num")
+
+    /*a();
+    function a() {
+        b();
+    }
+    function b(isTrue) {
+        if(!isTrue){
+            console.log('false');
+        }else{
+            console.log('true');
+        }
+    }
+
+    var m;
+    console.log(!m)*/
+
+    $(function () {
+        $('.d1').find('.d3').each(function () {
+            if ($(this).attr('data-a')) {
+                $(this).addClass('box-flag')
+                $(this).parents().find('.d1').addClass('flag3')
+
+            }
+        })
+        if ($('.d1').find('.d3').attr('data-a')) {
+            $('.d1').addClass('flag4')
+        }
+        /*$('.d1').each(function () {
+            if($(this).find('.box-flag').attr('data-a')){
+                $(this).addClass('flag')
+            }
+        })*/
+
+        /* $('.d1').find('.d3').each(function () {
+             if($(this).attr('data-a')){
+                $(this).parents().find('.d1').addClass('flag2')
+             }
+         })*/
+
+        $('.d1').find('.d3').each(function () {
+            if ($(this).hasClass('box-flag')) {
+                $(this).addClass('hahah')
+            }
+        })
+
+        // $('.d1').find('.d2').each(function () {
+        //     if ($(this).find('.d3').hasClass('q')) {
+        //         $(this).addClass('hahah')
+        //     }
+        // })
+
+        $('.d1').each(function () {
+            // if($(this).find('.q').hasClass('q')){
+                var l = $(this).find('.q').length;
+                console.log(l)
+            // }
+        })
+    })
+</script>
+<style>
+    div {
+        width: 200px;
+    }
+
+    .d3 {
+        height: 30px;
+        border: 2px solid pink;
+    }
+</style>
+<div class="d0">
+    <div class="d1">
+        <div class="d2">
+            <div class="d3"></div>
+            <div class="d3 q" data-a="1"></div>
+            <div class="d3"></div>
+            <div class="d3"></div>
+            <div class="d3"></div>
+            <div class="d3"></div>
+        </div>
+        <div class="d2">
+            <div class="d3"></div>
+            <div class="d3 q" data-a="1"></div>
+            <div class="d3"></div>
+            <div class="d3"></div>
+            <div class="d3"></div>
+            <div class="d3"></div>
+        </div>
+        <div class="d2">
+            <div class="d3"></div>
+            <div class="d3"></div>
+            <div class="d3 q" data-a="1"></div>
+            <div class="d3 q" data-a="1"></div>
+            <div class="d3"></div>
+            <div class="d3"></div>
+        </div>
+    </div>
+    <div class="d1">
+        <div class="d2">
+            <div class="d3 q"></div>
+            <div class="d3" data-a="1"></div>
+            <div class="d3"></div>
+            <div class="d3"></div>
+            <div class="d3"></div>
+            <div class="d3"></div>
+        </div>
+        <div class="d2">
+            <div class="d3 q"></div>
+            <div class="d3" data-a="1"></div>
+            <div class="d3"></div>
+            <div class="d3"></div>
+            <div class="d3"></div>
+            <div class="d3"></div>
+        </div>
+        <div class="d2">
+            <div class="d3 q"></div>
+            <div class="d3"></div>
+            <div class="d3" data-a="1"></div>
+            <div class="d3" data-a="1"></div>
+            <div class="d3"></div>
+            <div class="d3"></div>
+        </div>
+    </div>
+    <div class="d1">
+        <div class="d2">
+            <div class="d3"></div>
+            <div class="d3" data-a="1"></div>
+            <div class="d3"></div>
+            <div class="d3"></div>
+            <div class="d3"></div>
+            <div class="d3"></div>
+        </div>
+        <div class="d2">
+            <div class="d3"></div>
+            <div class="d3" data-a="1"></div>
+            <div class="d3"></div>
+            <div class="d3"></div>
+            <div class="d3"></div>
+            <div class="d3"></div>
+        </div>
+        <div class="d2">
+            <div class="d3"></div>
+            <div class="d3"></div>
+            <div class="d3" data-a="1"></div>
+            <div class="d3" data-a="1"></div>
+            <div class="d3"></div>
+            <div class="d3"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+        var obj={};
+        for(let i=0; i<5; i++){
+        }
+
+    })
+</script>
+</body>
+</html>

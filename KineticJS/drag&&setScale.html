@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="kinetic-v5.1.0.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-mousewheel/3.1.13/jquery.mousewheel.js"></script>
+    <style>
+        #draw_div{
+            width: 100%;
+            height: 1080px;
+        }
+    </style>
+</head>
+<body>
+<div class="dcview" id="draw_div"></div>
+<script>
+    window.onload = function () {
+        let clientW = $('.dcview').width(),
+            clientH = $('.dcview').height(),
+            scale= clientW/1920;
+
+        //创建舞台
+        var stage = new Kinetic.Stage({
+            container : 'draw_div',
+            width : clientW,
+            height : clientH,
+            draggable : true,
+            // dragBounds: {
+            //     top: 300
+            // }
+        });
+        //创建层
+        var layer = new Kinetic.Layer();
+
+        //创建背景图片
+        var imageObj = new Image();
+        imageObj.src = './bgpic3.png';
+        imageObj.onload = function() {
+            let image = new Kinetic.Image({
+                    x : 0,
+                    y : 0,
+                    image : imageObj,
+                    width : 1920,
+                    height : 1080,
+                    setZIndex : 1,
+                });
+            layer.add(image).draw();
+        };
+
+        stage.add(layer);
+
+        //按照分辨率缩放
+        // console.log(clientW)
+        stage.setScale({
+            x : scale,
+            y : scale
+        });
+        layer.batchDraw();
+        $(window).resize(function () {
+            alert('aaaa')
+
+            clientW = $('.dcview').width();
+            $('.dcview>div>canvas').width(clientW);
+            scale = clientW/1920;
+
+            stage.setScale({
+                x : scale,
+                y : scale
+            }).offset({
+                x : 0,
+                y : 0
+            });
+
+            /*消除拖拽效果*/
+            stage.x(0);
+            stage.y(0);
+            layer.batchDraw();
+        })
+
+        //页面放大和缩小
+        var level = scale;//放大的倍数
+        var Rollercount = 0;//滚轮第几次使用
+        //滚轮
+        $('body').mousewheel(
+            function(event, delta) {
+                let difference = level - scale// == 0 ? 1 : Math.abs(level - scale),//为正
+                    clientW = $('.dcview').width(),
+                    clientH = $('.dcview').height(),
+                    scale= clientW/1920,
+                    x2 = clientW/2,
+                    y2 = clientH/2,
+                    basicX = 246.87900000000002,
+                    basicY = 310 - 25;
+
+                let x = 1920 / 2,
+                    y = 1080 / 2,
+                    Sx = stage.x() / 2 == 480 ? 0 : stage.x() / 2,
+                    Sy = stage.y() / 2 == 270 ? 0 : stage.y() / 2,
+                    /*错误一：原*/
+                    // Ux = Math.abs(Sx - x) / level,
+                    // Uy = Math.abs(Sy - y) / level
+
+                    /*错误二：相反减*/
+                    // Ux = Sx - x2 / difference,
+                    // Uy = Sy - y2 / difference
+                    /*错误三：绝对值*/
+                    // Ux = Math.abs(Sx - x2) / difference,
+                    // Uy = Math.abs(Sy - y2) / difference
+
+                    /*错误四*/
+                    // Ux = Math.abs(clientW/2/(level-scale));
+                    // Uy = Math.abs(clientH/2/(level-scale));
+
+                    Ux = x2 - Sx / difference,
+                    Uy = y2 - Sy / difference//在中心点
+                ;
+
+                Uy = basicY;//一到上方
+
+                if (delta > 0) {
+                    level = level + 0.5;
+                    if(level){
+                        // level = 3;
+
+                        stage.setScale({
+                            x : level,
+                            y : level
+                        }).offset({
+                            x : Ux,
+                            y : Uy
+                        }).move({
+                            x : 0,
+                            y : 0
+                        });
+
+                        stage.x(0);
+                        stage.y(0);
+                    }
+
+                    // if (Rollercount == 0) {
+                    //     stage.move({
+                    //         x : x,
+                    //         y : y
+                    //     })
+                    // }
+
+                    Rollercount++
+                } else {
+                    if(level <= scale){
+                        stage.setScale({
+                            x : scale,
+                            y : scale
+                        }).offset({
+                            x : 0,
+                            y : 0
+                        }).move({
+                            x : 0,
+                            y : 0
+                        });
+                    }
+
+                    if(level > scale){
+                        level = level - 0.5;
+                        stage.setScale({
+                            x : level,
+                            y : level
+                        }).offset({
+                            x : Ux,
+                            y : Uy
+                        }).move({
+                            x : 0,
+                            y : 0
+                        });
+                    }
+
+                    // if (level <= 1) {
+                    //
+                    // } else {
+                    // 	level = level - 0.1;
+                    // 	stage.offset({
+                    // 		x : Ux,
+                    // 		y : Uy
+                    // 	})
+                    // 	.setScale({
+                    // 		x : level,
+                    // 		y : level
+                    // 	});
+                    // }
+                }
+                stage.x(0);
+                stage.y(0);
+                layer.batchDraw();
+                return false;
+            }
+        );
+
+        //拖拽事件
+        let dragStatus = false,
+            timer = null;
+        stage.on("dragstart", function (evt) {
+            // 响应代码
+            dragStatus = true;
+            console.log('dragstart',evt)
+        })
+
+        stage.on("dragmove", function (evt) {
+            // 响应代码
+            console.log('dragmove',evt)
+
+            // stage.off("dragstart")
+
+            if(dragStatus){
+                if(timer){
+                    clearTimeout(timer)
+                }
+                timer = setTimeout(() => {
+                    stage.on("dragstart")
+                },16)
+            }
+        })
+
+        stage.on("dragend", function (evt) {
+            // 响应代码
+            dragStatus = false;
+            stage.off("dragstart")
+            console.log('dragend',evt)
+        })
+    };
+</script>
+</body>
+</html>

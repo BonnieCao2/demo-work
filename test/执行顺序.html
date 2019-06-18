@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test3</title>
+</head>
+<body>
+<script>
+   /*
+   * 执行上下文
+   * 范围：一段<script>或者一个函数
+   * 全局：变量定义，函数声明（一段<script>）
+   * 函数：变量定义，函数声明，this，argument（函数）
+   * 注意：函数申明和函数表达式的区别
+   * */
+   /*
+   * var a，function fn(name)先拿出来
+   * */
+    var b
+    console.log(b);//undefined
+    console.log(a);//undefined
+    var a = 100;//函数表达式
+
+    fn('zhangsan')//zhangsan,20
+    function fn(name) {
+        age = 20
+        console.log(name,age)
+        var age//进入函数内var age先拿出来
+    }
+
+
+    /*
+    * this要在执行时才能确认值，定义时无法确认
+    * */
+    var c = {
+        name: 'C',
+        fn: function () {
+            console.log(this.name)
+        }
+    }
+    console.log(c.name)
+   c.fn();//this === a
+    c.fn.call({name:'B'})//this === {name:''B}
+   var fn1 = c.fn
+   fn1()//this === window
+
+   /*
+   * 作为构造函数执行
+   * 作为对象属性执行
+   * 作为普通函数执行
+   * call apply bind
+   * */
+   function Foo(name) {
+       //this = {}
+       this.name = name;
+       // return this
+   }
+   var f = new Foo('zhangsan')
+
+   var obj = {
+       name: 'A',
+       printName: function () {
+           console.log(this.name)
+       }
+   }
+   obj.printName();//this===obj
+
+   function fn3() {
+       console.log(this)//this === window
+   }
+   fn3()
+
+   //call apply bind
+   function fn4(name,age) {
+       // alert(name)
+       console.log(this)//this === window
+   }
+   fn4.call({x:100},'zhangsan',20)//this === {x:100}
+   fn4.apply({x:100},['zhangsan',20])//this === {x:100}
+
+   var fn5 = function (name,age) {
+       // alert(name)
+       console.log(this)//
+   }.bind({y:200})
+   fn5('zhangsan',20)//this === {y:200}
+
+   /*
+   * 没有块级作用域
+   * 只有函数和全局作用域
+   * */
+   //无块级作用域
+   if (true){
+       let name = 'lisi'
+   }
+   console.log(name)//lisi
+
+   var aa=100
+   function fn7() {
+       var bb=200
+       console.log(aa)
+       console.log(bb)
+   }
+   fn7()//100 200
+   aa = 200
+
+   /*闭包*/
+   //1.函数作为返回值
+   function fn8() {
+       var a3 = 1000
+
+       return function () {
+           console.log(a3)
+       }
+   }
+   var fn9 = fn8()
+   var a3 = 2000
+   fn9()//1000
+   //函数作为参数来返回
+   function fn10(fn) {
+       var a = 2000
+       fn()
+   }
+   fn10(fn9)//1000
+
+   //函数和全局作用域
+   var a=100
+   function fn6() {
+       var a=200
+       console.log('fn6',a)
+   }
+   fn6()
+
+   /*
+   * 创建10个a标签，点击的时候弹出来对应的序号
+   * */
+    //错误的写法
+   var i,a4
+   for (i=0;i<10;i++){
+       a4 = document.createElement('a')
+       a4.innerHTML = i +'<br>'
+       a4.addEventListener('click',function (e) {
+           e.preventDefault()
+           alert(i)
+       })
+       document.body.appendChild(a4)
+   }
+
+   //正确的写法
+   var i,a5
+   for (i=0;i<10;i++){
+       (function (i) {
+
+           a5 = document.createElement('a')
+           a5.innerHTML = i +'<br>'
+           a5.addEventListener('click',function (e) {
+               e.preventDefault()
+               alert(i)
+           })
+           document.body.appendChild(a5)
+
+       })(i)
+
+   }
+   //正确的写法2
+   var a6
+   for (let i=0;i<10;i++){
+       a6 = document.createElement('a')
+       a6.innerHTML = i +'<br>'
+       a6.addEventListener('click',function (e) {
+           e.preventDefault()
+           alert(i)
+       })
+       document.body.appendChild(a6)
+   }
+
+    //闭包实际应用中主要用于封装变量，收敛权限
+   function isFirstLoad() {
+       var _list=[]
+       return function (id) {
+           if (_list.indexOf(id)>=0){
+               return false
+           }else {
+               _list.push(id)
+               return true
+           }
+       }
+   }
+
+    //使用
+   var firstLoad = isFirstLoad()
+   firstLoad(10) //true
+   firstLoad(10) //false
+   firstLoad(20) //true
+
+
+
+
+   //<!--同步>异步>回调 99%适用-->
+   for(var i=0; i<5; i++){
+       setTimeout(function () {
+           console.log(new Date(),i);//3. 55555
+       },1000)
+       console.log(i);//1. 0 1 2 3 4
+   }
+   console.log(new Date(),i);//2. 5
+
+</script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        .ui-menu {
+            width: 300px;
+            height: 500px;
+        }
+    </style>
+</head>
+<body>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.2.3/jquery.contextMenu.css" rel="stylesheet"/>
+<script src="kinetic-v5.1.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.2.3/jquery.ui.position.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.2.3/jquery.contextMenu.min.js"></script>
+
+<div id="container"></div>
+
+<menu id="html5menu1" type="context" class="showcase">
+    <menuitem label="ajay" onclick="window.open('http://google.com','_newtab');"></menuitem>
+    <menuitem label="vijay"></menuitem>
+</menu>
+
+<menu id="html5" type="context" class="show">
+    <menuitem label="ajay 56" onclick="window.open('http://google.com','_newtab');"></menuitem>
+    <menuitem label="vijay 1234"></menuitem>
+</menu>
+
+<script>
+    var stage = new Kinetic.Stage({
+        container: 'container',
+        x: 10,
+        y: 10,
+        width: 800,
+        height: 200,
+    });
+
+    var layer = new Kinetic.Layer();
+
+
+    var Igpk = new Kinetic.Rect({
+        id:'igpk',
+        x: 148,
+        y: 32,
+        width: 62,
+        height: 118,
+        fill: 'gold',
+        stroke: 'black',
+        strokeWidth: 2,
+        opacity: 1,
+        draggable: false
+    });
+
+    var Igpktext = new Kinetic.Text({
+        x: 148 + 1,
+        y: 32,
+        text: 'iGPK',
+        fontSize: 15,
+        fontFamily: 'Calibri',
+        fill: 'black',
+
+    });
+
+    var IgpkGroup = new Kinetic.Group({});
+
+    IgpkGroup.add(Igpk);
+    IgpkGroup.add(Igpktext);
+
+    var Requestone = new Kinetic.Rect({
+        id: 'myRect',
+        x: 219,
+        y: 28,
+        width: 116,
+        height: 118,
+        fill: '#87cefa',
+        stroke: 'black',
+        strokeWidth: 2,
+        opacity: 1,
+        draggable: false
+    });
+
+
+    var Requestonetext = new Kinetic.Text({
+        x: 219 + 1,
+        y: 28,
+        text: 'Request One',
+        fontSize: 15,
+        fontFamily: 'Calibri',
+        fill: 'black',
+
+    });
+
+    var RequestoneGroup = new Kinetic.Group({});
+
+    RequestoneGroup.add(Requestone);
+    RequestoneGroup.add(Requestonetext);
+
+    RequestoneGroup.on('click', function() {
+
+        $.contextMenu({
+            selector: '#container',
+            items: $.contextMenu.fromMenu($('#html5menu1'))
+
+        });
+
+    });
+
+    // IgpkGroup.on('click', function() {
+    //
+    //     $.contextMenu({
+    //         selector: '#container',
+    //         items: $.contextMenu.fromMenu($('#html5'))
+    //
+    //     });
+    //
+    // });
+
+
+    layer.add(IgpkGroup);
+    layer.add(RequestoneGroup);
+    stage.add(layer);
+</script>
+
+</body>
+</html>

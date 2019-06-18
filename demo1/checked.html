@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+</head>
+<body>
+<input id="test" type="checkbox">勾选
+<script>
+
+/*
+.attr('checked'); //看版本1.6+返回:”checked”或”undefined” ;1.5-返回:true或false
+.prop('checked'); //16+:true/false
+.is(':checked'); //所有版本:true/false//别忘记冒号哦
+*/
+
+$(function () {
+    $('#test').on('change',function () {
+        if($(this).is(':checked')){
+            alert('aaa')
+        }
+
+    })
+})
+</script>
+</body>
+</html>

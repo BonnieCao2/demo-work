@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html *{
+            margin: 0;
+            padding: 0;
+        }
+        /*#wrap{
+            !*min-width: 500px;*!
+            width: 50%;
+            height: 900px;
+            margin: 0 auto;
+            background-color: pink;
+        }*/
+        body{
+            display: flex;
+        }
+        #left{
+            width: 300px;
+            height: 500px;
+            background-color: orangered;
+        }
+        #right{
+            height: 500px;
+            background-color: green;
+            flex: 1;
+            position: relative;
+        }
+        #box{
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -100px;
+            margin-top: -100px;
+            background-color: hotpink;
+            text-align: center;
+            /*line-height: 200px;*/
+            display: table-cell;
+            vertical-align: middle;
+        }
+        #word{
+            display: inline-block;
+            width: 80%;
+        }
+    </style>
+</head>
+<body>
+<!--<div id="wrap">
+
+</div>-->
+<div id="left"></div>
+<div id="right">
+    <div id="box">
+        <!--<span id="word">你觉得那得看都看打卡打卡</span>-->
+        你觉得那得看都看打卡打卡
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="kinetic-v5.1.0.min.js"></script>
+</head>
+<body>
+<div id='container'></div>
+<script>
+    window.onload = function () {
+        var stage = new Kinetic.Stage({
+            container: 'container',
+            width: 600,
+            height: 400,
+            // draggable: true,
+        });
+        var layer = new Kinetic.Layer();
+
+        let offsetX,offsetY,tip,tipText;
+        //创建一个要加进组中的圆
+        var circle = new Kinetic.Circle({
+            x: 100,
+            y: 100,
+            radius: 50,
+            fill: 'red',
+            stroke: "black",
+            strokeWidth: 4,
+            lineJoin: "round",
+            alpha: 0.1,//没用
+        }).on("click", function (evt) {
+            evt.cancelBubble = true;
+            alert("circle clicked");
+            //window.print();//可打印
+        });
+
+        var circle2 = new Kinetic.Circle({
+            id: 'circle2',
+            x: 200,
+            y: 100,
+            radius: 50,
+            fill: 'red',
+            stroke: "black",
+            strokeWidth: 4,
+            lineJoin: "round",
+            alpha: 0.1,//没用
+            setZIndex: 30,
+        }).on("click", function (evt) {
+            evt.cancelBubble = true;
+            alert("circle clicked");
+            layer.find('#circle2').setFill('#e0e0e0')
+            layer.draw();
+            console.log(layer.find('#circle2'))
+        });
+
+
+        //创建一个要加进组中的矩形
+        var rect = new Kinetic.Rect({
+            x: 0,
+            y: 0,
+            width: 200,
+            height: 200,
+            // draggable: true,
+            fill: 'blue'
+        }).on("click", function (evt) {
+            evt.cancelBubble = true;
+            alert("rect clicked");
+        });
+
+        var rect2 = new Kinetic.Rect({
+            x: 100,
+            y: 0,
+            width: 200,
+            height: 200,
+            // draggable: true,
+            fill: 'pink',
+            setZIndex: 30,
+        }).on("click", function (evt) {
+            evt.cancelBubble = true;
+            alert("rect clicked");
+            rect2.move(200,200)
+        });
+
+        //创建 group 对象
+        var group = new Kinetic.Group();
+        //把多个图形对象添加到 group 里
+        group.add(circle);
+        group.add(rect);
+
+        var group2 = new Kinetic.Group();
+        group2.add(circle2).add(rect2)
+        //把 group 对象添加到层里
+
+        layer.add(group2).add(group);
+        group2.setZIndex(1)//setZIndex必须在add之后
+        //将层添加到舞台中
+        stage.add(layer);
+        stage.batchDraw();
+
+        // circle.moveToTop();
+        circle.setZIndex(2);
+        circle2.setZIndex(3);
+        // group2.setZIndex(1)
+
+        layer.on("click", function (evt) {
+            // evt.cancelBubble = true;
+            alert("layer clicked");
+
+        });
+        stage.on("click", function (evt) {
+            // evt.cancelBubble = true;
+            alert("stage clicked");
+        });
+        stage.batchDraw();
+    };
+</script>
+</body>
+</html>

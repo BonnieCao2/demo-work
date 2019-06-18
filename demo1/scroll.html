@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>监听滚动条事件</title>
+    <style type="text/css">
+        *{margin: 0;padding: 0;}
+        ul{width: 50%;overflow: auto}
+        li{width: 150%;height: 50px;}
+    </style>
+</head>
+<body>
+<ul>
+    <li>0001</li>
+    <li>0001</li>
+    <li>0001</li>
+    <li>0001</li>
+    <li>0001</li>
+    <li>0001</li>
+    <li>0001</li>
+    <li>0001</li>
+    <li>0001</li>
+    <li>0001</li>
+    <li>0001</li>
+    <li>0001</li>
+    <li>0001</li>
+    <li>0001</li>
+    <li>0001</li>
+    <li>0001</li>
+    <li>0001</li>
+    <li>0001</li>
+    <li>0001</li>
+    <li>0001</li>
+    <li>0001</li>
+    <li>0001</li>
+</ul>
+</body>
+<script type="text/javascript">
+    window.addEventListener("scroll",function(e){
+//alert("滚动了");
+//变量t就是滚动条滚动时，到顶部的距离
+        var t =document.documentElement.scrollTop||document.body.scrollTop;
+        console.log(t)
+        var t2 =document.querySelector('li').scrollLeft||document.body.scrollLeft;
+        console.log(t2)
+        if(t <= 0){
+            alert("到顶部了")
+        }
+    });
+</script>
+</html>
+

@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+var _openChild = [];//记录mini.open的对象个数
+//锁钮
+$(".d33").click(function () {
+    $(".Auxiliary").hide();
+    if (_openChild.length > 0) {
+        for (let key of _openChild) {
+            let _Inwindow = key.getIFrameEl().contentWindow;
+            if (_Inwindow._IsIn == false) {
+                _Inwindow.LockButton("CanOperate");
+            } else {
+                _Inwindow.LockButton("InCanOperate");
+            }
+        }
+    }
+    let rrc = document.getElementById("shippeiwei").contentWindow;
+    // document.getElementById("shippeiwei").Unpacking($("#choose").val(), "CanOperate");
+    if($(".iii").attr('src')!==''){
+
+        rrc.LockButton("CanOperate");
+    }
+});
+
+/*
+* 锁钮
+* */
+var LockButton = (obj)=> {
+    if ($("." + obj + ".confirm").length > 0) {
+        let dataList = [];
+        $("." + obj + ".confirm").each(function (q) {
+            let loadorunload;
+            if (obj == "CanOperate") {
+                if ($(this).parents(".BayContent").attr("data-load") == "load") {
+                    loadorunload = scVoyCurid;
+                } else {
+                    loadorunload = iscVoyCurid;
+                }
+            } else {
+                if ($(this).parents(".RightBayCo").parent().attr("id").substr(0, 1) == "L") {
+                    loadorunload = scVoyCurid;
+                } else {
+                    loadorunload = iscVoyCurid;
+                }
+            }
+            dataList[q] = {
+                "vawVbtId": vbtId,
+                "vawVoyId": loadorunload,
+                "vawLocation": $(this).attr("data-scvlocation"),
+                "vawBayId": $(this).attr("data-vbyBayid"),
+                "vawVhtId": $(this).attr("data-scHatchId")
+            };
+        });
+        var parm = {};
+        parm.vpsAssistWorkPojo = dataList;
+        parm.vbtId = vbtId;
+        jQuery.ajax({
+            url: projectRoot + "/shipCtrlInfoConfig/saveVesselWorkLock",
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(parm),
+            success: function (result) {
+                if (result.result == 0) {
+                    Recontainer(obj);
+                    TipBox("锁钮成功");
+                } else {
+                    alert(result.message);
+                    TipBox("锁钮失败");
+                }
+            }
+        })
+    } else {
+        TipBox("请选择集装箱后再操作")
+    }
+};
+
+/*
+ * 刷新集装箱数据
+ * */
+var Recontainer = (obj, isSingleRender)=> {
+    if (obj == "CanOperate" || obj == "containercolor") {
+        // BottomAjax(receiveObj);
+        var $domCabin = isSingleRender ? $(".confirm").parents(".Cabin") : $('.Cabin');
+        if($domCabin.length>0){
+            receiveObj.vhtIds=[];
+            // $('.library').empty();
+            $domCabin.each(function(k,valt){
+                // $(valt).attr('id').replace(/[^0-9]/ig,"");
+                receiveObj.vhtIds.push($(valt).attr('id').replace(/[^0-9]/ig,""));
+            });
+            var $scrollLeft = 0;        //操作后保存原本scroll位置
+            if (!isSingleRender){
+                $('.library').empty();
+            }
+            else {
+                $scrollLeft = $domCabin.eq(0).offset().left;
+                $domCabin.remove();
+            }
+
+            BottomAjax(receiveObj, $scrollLeft);
+        }
+    } else {
+        InBottomAjax(receiveObj);
+    }
+};
+//进行底层AJAX请求
+var BottomAjax = function (json, $scrollLeft) {
+    jQuery.ajax({
+        url: projectRoot + "/overView/getShipBayList",
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(json),
+        beforeSend: function () {
+            loadingId = mini.loading("加载中", "提示");
+        },
+        success: function (result) {
+            if (result.result == 0) {
+                BottomCreate(result.content, json, $scrollLeft);
+                mini.hideMessageBox(loadingId);
+            } else {
+                alert(result.message);
+                mini.hideMessageBox(loadingId);
+            }
+            mini.hideMessageBox(loadingId);
+        }
+    })
+};
+//底层数据铺垫ssss
+var BottomCreate = function (ajaxcontent, json, $scrollLeft) {
+    var sLeft = $scrollLeft || 0;
+    //debugger;
+    if (ajaxcontent != null) {
+        if($(".bit_create").length==0){
+            let Time = new Date().getTime();
+            $("#ContentBay").empty().append("<div id='bit_create" + Time + "' class='bit_create'></div>");
+            $("#bit_create" + Time).append(""+
+                "<div class='library'></div>");
+        }
+
+        //定义舱数量
+        let CabinNum = [];
+        //根据返回的数据确定有多少个舱
+        for (let i of ajaxcontent) {
+            if (CabinNum.indexOf(i.vhtId) < 0) {
+                CabinNum.push(i.vhtId)
+            }
+        }
+        //根据多少舱建立多少个舱的框
+        let ArrboxTea=[];
+        if($(".Cabin").length==0){
+            for (let j of CabinNum) {
+                $(".library").append("<div id='Cabin" + j + "' class='Cabin'><div class='CabinClose'>x</div></div>")
+            }
+        }else{
+            // 插入
+            // 获取 本地的 舱
+            for (let j of CabinNum) {
+                // 逐一进行比较大小
+                var arrbendicid=[];
+                Array.from($(".Cabin")).forEach(function(val){
+                    arrbendicid.push(parseInt($(val).attr('id').replace(/[^0-9]/ig, "")));
+                });
+                arrbendicid.push(j);
+                arrbendicid.sort();//排序
+                let postiontt  = arrbendicid.indexOf(j);
+                // 判断j  处于第几位   prepend()
+                if(postiontt==0){
+                    $(".library").prepend("<div id='Cabin" + j + "' class='Cabin'><div class='CabinClose'>x</div></div>")
+                }else{
+                    $($(".Cabin")[postiontt-1]).after("<div id='Cabin" + j + "' class='Cabin'><div class='CabinClose'>x</div></div>")
+                }
+            }
+        }
+        //根据舱内多少倍建立倍的框
+        let HatchArr = [],
+            bayNoArr = [];
+        for (let i of ajaxcontent) {
+            let CabinNo = i.bigNo,
+                bayNo = i.bayNo,
+                vhtId = i.vhtId,
+                bayIdentify = i.bayIdentify,
+                _tierobj = i.vslTiersVos,
+                _rowobj = i.vslRowsVos;
+//                HatchArr = [{
+//                    bayNo: bayNo,
+//                    vslCd: vlcVslCd
+//                }]
+            HatchArr.push({
+                bayNo: bayNo,
+                vslCd: vlcVslCd
+            });
+            bayNoArr.push(bayNo)
+            if (CabinNo % 2 == 0) {
+                if (CabinNo < 10) {
+                    CabinNo = "0" + CabinNo
+                }
+                CabinNo = bayNo + "(" + CabinNo + ")";
+            } else {
+                CabinNo = bayNo
+            }
+            $("#Cabin" + vhtId).append("<div id='Bay" + bayNo + "' class='Bay clear' data-bayIdentify='" + bayIdentify + "' data-vhtId='" + vhtId + "'>" +
+                "<div class='BayLoad'><div id='BayNo" + bayNo + "' class='BayNo'>" + CabinNo + "-装</div><div id='BayContent" + bayNo + "' data-Load='load' class='BayContent'><div class='Deckup'><div class='Deckupleft'></div><div class='Deckupright'></div></div><div id='Hatchcover" + bayNo + "' class='Hatchcover'></div><div class='Deckdown'><div class='Deckdownleft'></div><div class='Deckdownright'></div></div></div></div>" +
+                "<div class='BayLoad'><div id='BayNo" + bayNo + "' class='BayNo'>" + CabinNo + "-卸</div><div id='BayContent" + bayNo + "' data-Load='unload' class='BayContent'><div class='Deckup'><div class='Deckupleft'></div><div class='Deckupright'></div></div><div id='Hatchcover" + bayNo + "' class='Hatchcover'></div><div class='Deckdown'><div class='Deckdownleft'></div><div class='Deckdownright'></div></div></div></div>" +
+                "</div>");
+            //建立倍下的数据(左边数字)
+            for (let k of _tierobj) {
+                let vbyHtdkfg = k.vbyHtdkfg,
+                    tierno = k.vtrTierno,
+                    tierseq = k.vtrTierseq;
+                if (vbyHtdkfg == "D") {
+                    //建立左边的数字
+                    $("#BayContent" + bayNo + "[data-load='load']").find(".Deckupleft").append("<div id='DeckupleftNo" + tierno + "' data-DeckupleftSeq='" + tierseq + "' class='LeftNo'>" + tierno + "</div>");
+                    $("#BayContent" + bayNo + "[data-load='unload']").find(".Deckupleft").append("<div id='DeckupleftNo" + tierno + "' data-DeckupleftSeq='" + tierseq + "' class='LeftNo'>" + tierno + "</div>");
+                } else {
+                    //建立左边的数字
+                    $("#BayContent" + bayNo + "[data-load='load']").find(".Deckdownleft").append("<div id='DeckdownleftNo" + tierno + "' data-DeckdownleftSeq='" + tierseq + "' class='LeftNo'>" + tierno + "</div>");
+                    $("#BayContent" + bayNo + "[data-load='unload']").find(".Deckdownleft").append("<div id='DeckdownleftNo" + tierno + "' data-DeckdownleftSeq='" + tierseq + "' class='LeftNo'>" + tierno + "</div>");
+                }
+            }
+            //右边内容
+            for (let k of _rowobj) {
+                let vbyHtdkfg = k.vbyHtdkfg,
+                    rowno = k.vrwRowno,
+                    rowseq = k.vrwRowseq,
+                    gcvrwSpacefg = k.vrwSpacefg;//是否是隔槽;
+                //建立右边的框架
+                if (vbyHtdkfg == "D") {
+                    $("#BayContent" + bayNo + "[data-load='load']").find(".Deckupright").append("<div id='Deckupright" + rowno + "' class='upanddown'>" +
+                        "<div id='DeckuprightNo" + rowno + "' class='RightNo'>" + rowno + "</div>" +
+                        "<div id='DeckuprightNoC" + rowno + "' class='RightNoC' data-DeckuprightSeq='" + rowseq + "'></div>" +
+                        "</div>");
+                    $("#BayContent" + bayNo + "[data-load='unload']").find(".Deckupright").append("<div id='Deckupright" + rowno + "' class='upanddown'>" +
+                        "<div id='DeckuprightNo" + rowno + "' class='RightNo'>" + rowno + "</div>" +
+                        "<div id='DeckuprightNoC" + rowno + "' data-DeckuprightSeq='" + rowseq + "'></div>" +
+                        "</div>");
+                    for (let q of _tierobj) {
+                        let Htdkfg = q.vbyHtdkfg,
+                            tierno = q.vtrTierno,
+                            tierseq = q.vtrTierseq;
+                        // gcvrwSpacefg = q.vrwSpacefg;//是否是隔槽
+                        // if(Htdkfg == "D"){
+                        if (Htdkfg == "D") {
+                            $("#BayContent" + bayNo + "[data-load='load']").find(".Deckupright").find("#DeckuprightNoC" + rowno).append("<div id='DeckuprightContent" + tierno + "' data-DeckuprightContentSeq='" + tierseq + "' class='container'></div>");
+                            $("#BayContent" + bayNo + "[data-load='unload']").find(".Deckupright").find("#DeckuprightNoC" + rowno).append("<div id='DeckuprightContent" + tierno + "' data-DeckuprightContentSeq='" + tierseq + "' class='container'></div>");
+                        }
+
+
+                    }
+
+                    if(gcvrwSpacefg != null){
+                        if(gcvrwSpacefg.toLocaleLowerCase()=='l'){
+                            $("#BayContent" + bayNo + "[data-load='load']").find(".Deckupright").find("#Deckupright" + rowno).after("<div class='spaceidnull' style='width:1px;height:10px; float:left;' ></div>");
+                            $("#BayContent" + bayNo + "[data-load='unload']").find(".Deckupright").find("#Deckupright" + rowno).after("<div class='spaceidnull' style='width:1px;height:10px; float:left;' ></div>");
+                        }else if(gcvrwSpacefg.toLocaleLowerCase()=='r'){
+                            $("#BayContent" + bayNo + "[data-load='load']").find(".Deckupright").find("#Deckupright" + rowno).before("<div class='spaceidnull' style='width:1px;height:10px;float:left;' ></div>");
+                            $("#BayContent" + bayNo + "[data-load='unload']").find(".Deckupright").find("#Deckupright" + rowno).before("<div class='spaceidnull' style='width:1px;height:10px;float:left;' ></div>");
+                        }else{
+                            $("#BayContent" + bayNo + "[data-load='load']").find(".Deckupright").find("#Deckupright" + rowno).after("<div class='spaceidnull' style='width:1px;height:10px;float:left;' ></div>");
+                            $("#BayContent" + bayNo + "[data-load='unload']").find(".Deckupright").find("#Deckupright" + rowno).before("<div class='spaceidnull' style='width:1px;height:10px;float:left;' ></div>");
+                        }
+
+                    }
+
+
+
+
+                } else {
+                    $("#BayContent" + bayNo + "[data-load='load']").find(".Deckdownright").append("<div id='Deckdownright" + rowno + "' class='upanddown'>" +
+                        "<div id='DeckdownrightNoC" + rowno + "' data-DeckuprightSeq='" + rowseq + "'></div>" +
+                        "<div id='DeckdownrightNo" + rowno + "' class='RightNo'>" + rowno + "</div>" +
+                        "</div>");
+                    $("#BayContent" + bayNo + "[data-load='unload']").find(".Deckdownright").append("<div id='Deckdownright" + rowno + "' class='upanddown'>" +
+                        "<div id='DeckdownrightNoC" + rowno + "' data-DeckuprightSeq='" + rowseq + "'></div>" +
+                        "<div id='DeckdownrightNo" + rowno + "' class='RightNo'>" + rowno + "</div>" +
+                        "</div>");
+                    for (let q of _tierobj) {
+                        let Htdkfg = q.vbyHtdkfg,
+                            tierno = q.vtrTierno,
+                            tierseq = q.vtrTierseq;
+                        if (Htdkfg == "H") {
+                            $("#BayContent" + bayNo + "[data-load='load']").find(".Deckdownright").find("#DeckdownrightNoC" + rowno).append("<div id='DeckdownrightContent" + tierno + "' data-DeckuprightContentSeq='" + tierseq + "' class='container'></div>");
+                            $("#BayContent" + bayNo + "[data-load='unload']").find(".Deckdownright").find("#DeckdownrightNoC" + rowno).append("<div id='DeckdownrightContent" + tierno + "' data-DeckuprightContentSeq='" + tierseq + "' class='container'></div>");
+                        }
+                    }
+
+
+                    if(gcvrwSpacefg != null){
+                        if(gcvrwSpacefg.toLocaleLowerCase()=='l'){
+                            $("#BayContent" + bayNo + "[data-load='load']").find(".Deckdownright").find("#Deckdownright" + rowno).after("<div class='spaceidnull' style='width:1px;height:10px; float:left;' ></div>");
+                            $("#BayContent" + bayNo + "[data-load='unload']").find(".Deckdownright").find("#Deckdownright" + rowno).after("<div class='spaceidnull' style='width:1px;height:10px; float:left;' ></div>");
+                        }else if(gcvrwSpacefg.toLocaleLowerCase()=='r'){
+                            $("#BayContent" + bayNo + "[data-load='load']").find(".Deckdownright").find("#Deckdownright" + rowno).before("<div class='spaceidnull' style='width:1px;height:10px;float:left;' ></div>");
+                            $("#BayContent" + bayNo + "[data-load='unload']").find(".Deckdownright").find("#Deckdownright" + rowno).before("<div class='spaceidnull' style='width:1px;height:10px;float:left;' ></div>");
+                        }else{
+                            $("#BayContent" + bayNo + "[data-load='load']").find(".Deckdownright").find("#Deckdownright" + rowno).after("<div class='spaceidnull' style='width:1px;height:10px;float:left;' ></div>");
+                            $("#BayContent" + bayNo + "[data-load='unload']").find(".Deckdownright").find("#Deckdownright" + rowno).before("<div class='spaceidnull' style='width:1px;height:10px;float:left;' ></div>");
+                        }
+
+                    }
+
+                }
+            }
+
+            // 获取总的长度   upanddown  RightNo  upanddown
+            let Larr = $("#BayContent" + bayNo + "[data-load='unload']").find(".Deckdownright").find('.upanddown');
+            let Rarr = $("#BayContent" + bayNo + "[data-load='load']").find(".Deckdownright").find(".upanddown");
+            // let Larr = $("#BayContent" + bayNo + "[data-load='unload']").find('.upanddown');
+            // let Rarr = $("#BayContent" + bayNo + "[data-load='load']").find(".upanddown");
+
+            /**获取上面所有排号**/
+            function getWTFRowsId() {
+                let domArr = $("#BayContent" + bayNo).find(".Deckup").find(".upanddown"),
+                    idNumArr = [];
+                domArr.each(function (index, arg) {
+                    idNumArr.push(parseInt($(arg).attr('id').replace(/[^0-9]/ig, "")));
+                });
+                return idNumArr
+            }
+
+            /**获取下面所有排号**/
+            function getCRowsId() {
+                let domArr = $("#LCRows" + bayNo).find(".DRows"),
+                    idNumArr = [];
+                domArr.each(function (index, arg) {
+                    idNumArr.push(parseInt($(arg).attr('id').replace(/[^0-9]/ig, "")));
+                });
+                return idNumArr
+            }
+
+            function getRowWidthNum(numQ, numO) {
+                let arr = getWTFRowsId(),
+                    arrCRows = getCRowsId(),
+                    result = numO == 0 ? 0 : arr.indexOf(numQ) - arr.indexOf(numO) - 1;
+                if (arr.indexOf(0) > -1 && arrCRows.indexOf(0) < 0){
+                    result = 0;
+                }
+
+                return result < 0 ? 0 : result
+            }
+
+            let step,stepR;
+
+            // 获取左边
+            if(Larr.length>0){
+                let LarrNumQ=[],LarrNumO=[];
+                Larr.each(function(keya, arg){
+                    if(parseInt($(arg).attr('id').replace(/[^0-9]/ig, "")) %2 == 0){
+                        LarrNumO.push(parseInt($(arg).attr('id').replace(/[^0-9]/ig, "")));//偶数  zuobain
+                    }else{
+                        LarrNumQ.push(parseInt($(arg).attr('id').replace(/[^0-9]/ig, "")));//奇数  youbian
+                    }
+                });
+                step = getRowWidthNum(LarrNumQ[0], LarrNumO[LarrNumO.length - 1])
+
+                // 奇数 偶数
+                if(LarrNumO.length == 1){
+                    if(LarrNumO[0].toString().length == 1){
+                        if(LarrNumO[0]==0 || LarrNumO[0] == 2){
+
+                        }else{
+//                                let oneMR = (LarrNumO[0]-2)/2*20;
+                            let oneMR = step * 17;
+
+                            let hangonecc;
+                            if(LarrNumO[0].toString().length==1){
+                                hangonecc = "0"+LarrNumO[0].toString();
+                            }else{
+                                hangonecc = LarrNumO[0].toString()
+                            }
+
+                            $("#BayContent" + bayNo + "[data-load='unload']").find(".Deckdownright").find('#Deckdownright'+hangonecc).css('margin-right',oneMR+'px');
+                        }
+                    }
+                }else if(LarrNumO.length >1){
+                    if(LarrNumO[LarrNumO.length-1]==0 || LarrNumO[LarrNumO.length-1] == 2){
+
+                    }else{
+//                            let oneMR = (LarrNumO[LarrNumO.length-1]-2)/2*20;
+                        let oneMR = step * 17;
+
+                        let hangonecc;
+                        if(LarrNumO[LarrNumO.length-1].toString().length==1){
+                            hangonecc = "0"+LarrNumO[LarrNumO.length-1].toString();
+                        }else{
+                            hangonecc = LarrNumO[LarrNumO.length-1].toString()
+                        }
+
+                        $("#BayContent" + bayNo + "[data-load='unload']").find(".Deckdownright").find('#Deckdownright'+hangonecc).css('margin-right',oneMR+'px');
+                    }
+
+                    for(let vbr =LarrNumO.length-1; vbr >0; vbr--){
+                        let newvbr = vbr -1;
+                        let chazhinew = LarrNumO[newvbr] -LarrNumO[vbr];
+                        if(chazhinew>2){
+//                                let nwebma = (chazhinew-2)/2*20;
+                            let nwebma = step * 17;
+
+                            let hangonecc;
+                            if(LarrNumO[newvbr].toString().length==1){
+                                hangonecc = "0"+LarrNumO[newvbr].toString();
+                            }else{
+                                hangonecc = LarrNumO[newvbr].toString()
+                            }
+                            $("#BayContent" + bayNo + "[data-load='unload']").find(".Deckdownright").find('#Deckdownright'+hangonecc).css('margin-right',nwebma +'px');
+                        }
+                    }
+                }
+                // 奇数 偶数
+                if(LarrNumQ.length == 1){
+                    if(LarrNumQ[0].toString().length == 1){
+                        if(LarrNumQ[0]==0 || LarrNumQ[0] == 2){
+
+                        }else{
+                            let oneMR = (LarrNumQ[0]-2)/2*20;
+                            let hangonecc;
+                            if(LarrNumQ[0].toString().length==1){
+                                hangonecc = "0"+LarrNumQ[0].toString();
+                            }else{
+                                hangonecc = LarrNumQ[0].toString()
+                            }
+                            $("#BayContent" + bayNo + "[data-load='unload']").find(".Deckdownright").find('#Deckdownright'+hangonecc).css('margin-left',oneMR+'px');
+                        }
+                    }
+                }else if(LarrNumQ.length >1){
+                    if(LarrNumQ[0]==1){
+
+                    }else{
+                        let oneMR = (LarrNumQ[0]-1)/2*20;
+                        let hangonecc;
+                        if(LarrNumQ[0].toString().length==1){
+                            hangonecc = "0"+LarrNumQ[0].toString();
+                        }else{
+                            hangonecc = LarrNumQ[0].toString()
+                        }
+
+//                            $("#BayContent" + bayNo + "[data-load='unload']").find(".Deckdownright").find('#Deckdownright'+hangonecc).css('margin-left',oneMR+'px');
+                    }
+
+                    // for(let vbr =LarrNumQ.length-1; vbr >0; vbr--){
+                    for(let vbr =0; vbr < LarrNumQ.length-1; vbr++){
+                        let newvbr = vbr + 1;
+                        let chazhinew =LarrNumQ[newvbr]-LarrNumQ[vbr] ;
+                        if(chazhinew>2){
+                            let nwebma = (chazhinew-2)/2*20;
+
+                            let hangonecc;
+                            if(LarrNumQ[newvbr].toString().length==1){
+                                hangonecc = "0"+LarrNumQ[newvbr].toString();
+                            }else{
+                                hangonecc = LarrNumQ[newvbr].toString()
+                            }
+//                                $("#BayContent" + bayNo + "[data-load='unload']").find(".Deckdownright").find('#Deckdownright'+hangonecc).css('margin-left',nwebma +'px');
+                        }
+                    }
+                }
+
+            }
+            // 获取左边
+            if(Rarr.length>0){
+                let LarrNumQ=[],LarrNumO=[];
+                Larr.each(function(keya, arg){
+                    if(parseInt($(arg).attr('id').replace(/[^0-9]/ig, "")) %2 == 0){
+                        LarrNumO.push(parseInt($(arg).attr('id').replace(/[^0-9]/ig, "")));//偶数  zuobain
+                    }else{
+                        LarrNumQ.push(parseInt($(arg).attr('id').replace(/[^0-9]/ig, "")));//奇数  youbian
+                    }
+                });
+                stepR = getRowWidthNum(LarrNumQ[0], LarrNumO[LarrNumO.length - 1])
+
+                // 奇数 偶数
+                if(LarrNumO.length == 1){
+                    if(LarrNumO[0].toString() == 1){
+                        if(LarrNumO[0]==0 || LarrNumO[0] == 2){
+
+                        }else{
+//                                let oneMR = (LarrNumO[0]-2)%2*20;
+                            let oneMR = stepR * 17;
+                            let hangonecc;
+                            if(LarrNumO[0].toString().length==1){
+                                hangonecc = "0"+LarrNumO[0].toString();
+                            }else{
+                                hangonecc = LarrNumO[0].toString()
+                            }
+
+                            $("#BayContent" + bayNo + "[data-load='load']").find(".Deckdownright").find('#Deckdownright'+hangonecc).css('margin-right',oneMR+'px');
+                        }
+                    }
+                }else if(LarrNumO.length >1){
+                    if(LarrNumO[LarrNumO.length-1]==0 || LarrNumO[LarrNumO.length-1] == 2){
+
+                    }else{
+//                            let oneMR = (LarrNumO[LarrNumO.length-1]-2)/2*20;
+                        let oneMR = stepR * 17;
+                        let hangonecc;
+                        if(LarrNumO[LarrNumO.length-1].toString().length==1){
+                            hangonecc = "0"+LarrNumO[LarrNumO.length-1].toString();
+                        }else{
+                            hangonecc = LarrNumO[LarrNumO.length-1].toString()
+                        }
+
+                        $("#BayContent" + bayNo + "[data-load='load']").find(".Deckdownright").find('#Deckdownright'+hangonecc).css('margin-right',oneMR+'px');
+                    }
+
+                    for(let vbr =LarrNumO.length-1; vbr >0; vbr--){
+                        let newvbr = vbr -1;
+                        let chazhinew = LarrNumO[newvbr] -LarrNumO[vbr];
+                        if(chazhinew>2){
+//                                let nwebma = (chazhinew-2)/2*20;
+                            let nwebma = stepR * 17;
+
+                            let hangonecc;
+                            if(LarrNumO[newvbr].toString().length==1){
+                                hangonecc = "0"+LarrNumO[newvbr].toString();
+                            }else{
+                                hangonecc = LarrNumO[newvbr].toString()
+                            }
+                            $("#BayContent" + bayNo + "[data-load='load']").find(".Deckdownright").find('#Deckdownright'+hangonecc).css('margin-right',nwebma +'px');
+                        }
+                    }
+                }
+                // 奇数 偶数
+                if(LarrNumQ.length == 1){
+                    if(LarrNumQ[0].toString() == 1){
+                        if(LarrNumQ[0]==0 || LarrNumQ[0] == 2){
+
+                        }else{
+                            let oneMR = (LarrNumQ[0]-2)%2*20;
+                            let hangonecc;
+                            if(LarrNumQ[0].toString().length==1){
+                                hangonecc = "0"+LarrNumQ[0].toString();
+                            }else{
+                                hangonecc = LarrNumQ[0].toString()
+                            }
+                            $("#BayContent" + bayNo + "[data-load='load']").find(".Deckdownright").find('#Deckdownright'+hangonecc).css('margin-left',oneMR+'px');
+                        }
+                    }
+                }else if(LarrNumQ.length >1){
+                    if(LarrNumQ[0]==1){
+
+                    }else{
+                        let oneMR = (LarrNumQ[0]-1)/2*20;
+                        let hangonecc;
+                        if(LarrNumQ[0].toString().length==1){
+                            hangonecc = "0"+LarrNumQ[0].toString();
+                        }else{
+                            hangonecc = LarrNumQ[0].toString()
+                        }
+
+//                            $("#BayContent" + bayNo + "[data-load='load']").find(".Deckdownright").find('#Deckdownright'+hangonecc).css('margin-left',oneMR+'px');
+                    }
+                    for(let vbr =0; vbr < LarrNumQ.length-1; vbr++){
+                        let newvbr = vbr + 1;
+                        let chazhinew = LarrNumQ[newvbr] - LarrNumQ[vbr] ;
+                        if(chazhinew>2){
+                            let nwebma = (chazhinew-2)/2*20;
+
+                            let hangonecc;
+                            if(LarrNumQ[newvbr].toString().length==1){
+                                hangonecc = "0"+LarrNumQ[newvbr].toString();
+                            }else{
+                                hangonecc = LarrNumQ[newvbr].toString()
+                            }
+//                                $("#BayContent" + bayNo + "[data-load='load']").find(".Deckdownright").find('#Deckdownright'+hangonecc).css('margin-left',nwebma +'px');
+                        }
+                    }
+                }
+
+            }
+//                HatchAjax(HatchArr, bayNo);
+
+            let domUnload = $("#BayContent" + bayNo + "[data-load='unload']"),
+                domLoad = $("#BayContent" + bayNo + "[data-load='load']");
+
+            function domDeckdownWidth() {
+                domUnload.find(".Deckdown").each(function () {
+                    var dom = $(this).children(".Deckdownright").find('.upanddown'),
+                        len = dom.length,
+                        width = dom.eq(0).width()
+                    $(this).width(17 + (len + step) * width)
+                });
+                domLoad.find(".Deckdown").each(function () {
+                    var dom = $(this).children(".Deckdownright").find('.upanddown'),
+                        len = dom.length,
+                        width = dom.eq(0).width()
+                    $(this).width(17 + (len + step) * width)
+                });
+            }
+
+            var lenLoad = domLoad.find(".Deckupright").find(".RightNo").length,
+                lenUnload = domUnload.find(".Deckupright").find('.RightNo').length;
+            if(domUnload.find(".Deckdownright").find('.RightNo').length == 0){
+                domUnload.width(domUnload.find('.RightNo').length*22+66);
+                domUnload.parents(".BayLoad,BayNo").width(domUnload.find('.RightNo').length*22+66);
+                domLoad.width(domLoad.find(".RightNo").length*22+66);
+                domLoad.parents(".BayLoad,BayNo").width(domLoad.find(".RightNo").length*22+66);
+                domDeckdownWidth()
+            }else{
+                domUnload.width(lenUnload ? lenUnload*22 + 66 : 'auto');
+                domUnload.parents(".BayLoad,BayNo").width(domUnload.find(".Deckdownright").find('.RightNo').length*22+66);
+                domLoad.width(lenLoad ? lenLoad*22 + 66 : 'auto');
+                domLoad.parents(".BayLoad,BayNo").width(domLoad.find(".Deckdownright").find(".RightNo").length*22+66);
+                domDeckdownWidth()
+            }
+            let maxtterin = $($("#Cabin" + vhtId).find('.BayContent')[0]).width();
+            $("#Cabin" + vhtId).find('.BayContent').each(function(k,vr){
+                if(maxtterin < $(vr).width()){
+                    maxtterin = $(vr).width();
+                }
+            });
+            $("#Cabin" + vhtId).find('.BayLoad').each(function(k,vr){
+                $(vr).width(maxtterin);
+            });
+            // $("#BayContent" + bayNo + "[data-load='unload']").width(_rowobj.length*22+66);
+            // $("#BayContent" + bayNo + "[data-load='unload']").parents(".BayLoad,BayNo").width(_rowobj.length*22+66);
+            // $("#BayContent" + bayNo + "[data-load='load']").width(_rowobj.length*22+66);
+            // $("#BayContent" + bayNo + "[data-load='load']").parents(".BayLoad,BayNo").width(_rowobj.length*22+66);
+
+            domLoad.each(function (index, item) {
+                index % 2 === 0 && $(item).parents(".BayLoad").css('margin-right', '15px')
+            })
+            domUnload.each(function (index, item) {
+                index % 2 === 0 && $(item).parents(".BayLoad").css('margin-right', '15px')
+            })
+
+            $("#Cabin" + vhtId).width(maxtterin*2+10 + 20);
+        }
+
+        HatchAjax(HatchArr, bayNoArr);
+
+        //使其每个倍位居中对齐
+        $(".Deckup").each(function () {
+            $(this).width(17 + $(this).children(".Deckupright").width())
+        });
+//            $(".Deckdown").each(function () {
+////                $(this).width(22 + $(this).children(".Deckdownright").width())
+//                var dom = $(this).children(".Deckdownright").find('.upanddown'),
+//                        len = dom.length,
+//                        width = dom.eq(0).width()
+//                $(this).width(22 + len * width)
+//            });
+        //计算大框的宽度
+        if ($(".library").children().length > 1) {
+            $(".library").width($(".library").children().length * 1172);
+        } else {
+            $(".library,.bit_font").width($(".library").children().length * 1200);
+        }
+        //给予倍位框关闭的操作
+        $(".CabinClose").click(function () {
+            $(this).parent().remove();
+            $("#clickcontent").html("").hide();
+        });
+        //给生成的倍位图底部鼠标滑入滑出效果
+        $(".dyeing").click(function () {
+            $(".dyeing_floor").slideToggle("slow");
+        });
+        $(".detail").click(function () {
+            $(".detail_floor").slideToggle("show");
+        });
+        $('.zhaiyaocy>li').click(function(e){
+            // debugger;
+            let switchty = $(this).html()
+            let yshipnamet = localStorage.getItem('yshipname');
+            mini.open({
+                url : "<%=sourceRoot%>/remarkInfo.html",
+                title : "摘要",
+                width : "80%",
+                height : "80%",
+                onload : function() {
+                    var iframe = this.getIFrameEl();
+                    var data = {
+                        // 传值  作业状态
+                        switchty: switchty,
+                        // 传值船的名字
+                        id: yshipnamet,
+                        // 传值舱id 多个
+                        status:ycangId,
+                    };
+                    iframe.contentWindow.SetDatarr(data);
+                },
+                ondestroy : function(action) {
+                    if (action == "ok") {
+                        //如果点击“确定”
+                        var iframe = this.getIFrameEl();
+                        //获取选中、编辑的结果
+                        var data = iframe.contentWindow.GetData();
+                        data = mini.clone(data);    //必须。克隆数据。
+                    }
+                }
+            });
+
+        });
+        /*
+        *20170831 新增作业块功能
+        */
+        $('.nblockgn').click(function(e){
+            localStorage.selectarry = getAQD();
+            let objxzblock = totalClickBoxtt();
+            if(objxzblock){
+                var data = objxzblock;
+                mini.open({
+                    url : "<%=sourceRoot%>/shipCtrlInfoConfig/AddJobBlock.html",
+                    title : "新增作业块",
+                    width : "50%",
+                    height : "30%",
+                    showModal:false,
+                    onload : function() {
+                        var iframe = this.getIFrameEl();
+                        iframe.contentWindow.SetData(data);
+                    },
+                    ondestroy : function(action) {
+                        if (action == "ok") {
+                            //如果点击“确定”
+                            var iframe = this.getIFrameEl();
+                        }
+                    }
+                });
+            }else{
+                return false;
+            };
+        })
+        ContentAjax(json);
+    }
+    $("html").scrollLeft(sLeft);
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lng="en">
+<hed>
+    <met chrset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-1.8.0.js"></script>
+</hed>
+<body style="bckground-color: #44D5;pdding-left: 20%">
+<style>
+    #detilContent {
+        width: 450px;
+        height: 250px;
+        border: 1px solid #f5f5f5;
+        bckground-color: #B5B6B5;
+        color: #333;
+        disply: flex;
+        flex-direction: column;
+        justify-content: center;
+        font-size: 12px;
+        /*line-height: 16px;*/
+        font-weight: bold;
+    }
+    #detilContent>div+div{
+        border-top: 1px solid #f5f5f5;
+    }
+    #detilContent .prt{
+        width: 100%;
+        height: 30%;
+        disply: flex;
+        justify-content: spce-round;
+        flex-wrp: wrp;
+    }
+    #detilContent .prt4{
+        height: 10%;
+    }
+    #detilContent .prt spn{
+        /*width: 33%;*/
+    }
+</style>
+<script>
+    vr  = 213231;
+    $(function () {
+        $('body').ppend(
+            '<div id="detilContent">'+
+            '    <div clss="prt prt1">'+
+            '        <spn>箱号：'+iycCntrno+'</spn>'+
+            '        <spn>场箱位：'+''+'</spn>'+
+            '        <spn>尺寸：'+iycCszCsizecd+'</spn>'+
+            '        <spn>箱型：'+iycCtypecd+'</spn>'+
+            '        <spn>箱状态：'+''+'</spn>'+
+            '        <spn>箱动态：'+iycType+'</spn>'+
+            '        <spn>箱高：'+iycCheightcd+'</spn>'+
+            '        <spn>箱重：'+iycCweight+'</spn>'+
+            '        <spn>整拼标志：'+iycFlfg+'</spn>'+
+            '        <spn>装货港：'+iycPotLdport+'</spn>'+
+            '        <spn>卸货港：'+''+'</spn>'+
+            '        <spn>目的港：'+''+'</spn>'+
+            '    </div>'+
+            '    <div clss="prt prt2">'+
+            '        <spn>自重：'+''+'</spn>'+
+            '        <spn>总重：'+''+'</spn>'+
+            '        <spn>铅封号：'+''+'</spn>'+
+            '        <spn>材料：'+''+'</spn>'+
+            '        <spn>温度：'+''+'</spn>'+
+            '        <spn>监控：'+''+'</spn>'+
+            '        <spn>持箱人：'+iycCstCopercd+'</spn>'+
+            '        <spn>超限：'+''+'</spn>'+
+            '        <spn>整拼：'+''+'</spn>'+
+            '        <spn>危类：'+''+'</spn>'+
+            '        <spn>前后超长：'+''+'</spn>'+
+            '        <spn>溢缺：'+''+'</spn>'+
+            '        <spn>超高：'+''+'</spn>'+
+            '        <spn>残损：'+''+'</spn>'+
+            '        <spn>左右超宽：'+''+'</spn>'+
+            '        <spn>坏污：'+''+'</spn>'+
+            '    </div>'+
+            '    <div clss="prt prt3">'+
+            '        <spn>进场方式：'+''+'</spn>'+
+            '        <spn>进场时间：'+''+'</spn>'+
+            '        <spn>空放行：'+''+'</spn>'+
+            '        <spn>出厂方式：'+''+'</spn>'+
+            '        <spn>出厂时间：'+''+'</spn>'+
+            '        <spn>放行：'+''+'</spn>'+
+            '        <spn>运输方式：'+''+'</spn>'+
+            '        <spn>服务航线：'+''+'</spn>'+
+            '        <spn>箱组：'+''+'</spn>'+
+            '        <spn>一程船：'+''+'</spn>'+
+            '        <spn>二程船：'+''+'</spn>'+
+            '    </div>'+
+            '    <div clss="prt prt4">'+
+            '        <spn>预约号：212121</spn>'+
+            '        <spn>作业方式：212121</spn>'+
+            '        <spn>操作过程：212121</spn>'+
+            '    </div>'+
+            '</div>'
+        )
+    })
+
+</script>
+
+
+`箱号:${iycCntrno}</br>装货港:${iycPotLdport}</br>尺寸:${iycCszCsizecd}</br>箱型:${iycCtypecd}</br>箱高代码:${iycCheightcd}</br>箱动态:${iycType}</br>箱重:${iycCweight}</br>持箱人:${iycCstCopercd}</br>整拼标志:${iycFlfg}</br>场箱位:${iycYloction}`;
+
+<!--<div id="detilContent">
+    <div clss="prt prt1">
+        <spn>箱号：'+''+'</spn>
+        <spn>场箱位：'+''+'</spn>
+        <spn>尺寸：'+''+'</spn>
+        <spn>箱型：'+''+'</spn>
+        <spn>箱状态：'+''+'</spn>
+        <spn>箱动态：'+''+'</spn>
+        <spn>箱高：'+''+'</spn>
+        <spn>装货港：'+''+'</spn>
+        <spn>卸货港：'+''+'</spn>
+        <spn>目的港：'+''+'</spn>
+    </div>
+    <div clss="prt prt2">
+        <spn>自重：'+''+'</spn>
+        <spn>总重：'+''+'</spn>
+        <spn>铅封号：'+''+'</spn>
+        <spn>材料：'+''+'</spn>
+        <spn>温度：'+''+'</spn>
+        <spn>监控：'+''+'</spn>
+        <spn>持箱人：'+''+'</spn>
+        <spn>超限：'+''+'</spn>
+        <spn>整拼：'+''+'</spn>
+        <spn>危类：'+''+'</spn>
+        <spn>前后超长：'+''+'</spn>
+        <spn>溢缺：'+''+'</spn>
+        <spn>超高：'+''+'</spn>
+        <spn>残损：'+''+'</spn>
+        <spn>左右超宽：'+''+'</spn>
+        <spn>坏污：'+''+'</spn>
+    </div>
+    <div clss="prt prt3">
+        <spn>进场方式：'+''+'</spn>
+        <spn>进场时间：'+''+'</spn>
+        <spn>空放行：'+''+'</spn>
+        <spn>出厂方式：'+''+'</spn>
+        <spn>出厂时间：'+''+'</spn>
+        <spn>放行：'+''+'</spn>
+        <spn>运输方式：'+''+'</spn>
+        <spn>服务航线：'+''+'</spn>
+        <spn>箱组：'+''+'</spn>
+        <spn>一程船：'+''+'</spn>
+        <spn>二程船：'+''+'</spn>
+    </div>
+    <div clss="prt prt4">
+        <spn>预约号：212121</spn>
+        <spn>作业方式：212121</spn>
+        <spn>操作过程：212121</spn>
+    </div>
+</div>-->
+</body>
+</html>

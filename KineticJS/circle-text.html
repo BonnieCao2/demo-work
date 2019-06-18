@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="kinetic-v5.1.0.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+</head>
+<body>
+<div id='container'></div>
+<script>
+    $(function () {
+        let stage = new Kinetic.Stage({
+            container: 'container',
+            width: 900,
+            height: 900
+        });
+        let layer = new Kinetic.Layer();
+
+        stage.add(layer);
+
+        let group = new Kinetic.Group();
+
+        let x = 200,
+            y = 200,
+            r = 50,
+            textX = x - r,
+            textY = y - r,
+            textW = 2 * r,
+            textH = 2* r,
+            textC = "hhh";
+
+
+
+        let cricle = new Kinetic.Circle({
+            x: x,
+            y: y,
+            radius: r,
+            fill: "#99D9EA"
+        })
+
+        let text = new Kinetic.Text({
+            x: textX,
+            y: textY,
+            width: textW,
+            height: textH,
+            fill: "#333",
+            text: textC,
+            fontSize: 12,
+            align: 'center'
+        })
+        text.textHeight = textH;//上下居中
+        group.add(cricle).add(text);
+
+        layer.add(group);
+        layer.batchDraw();
+    })
+</script>
+</body>
+</html>

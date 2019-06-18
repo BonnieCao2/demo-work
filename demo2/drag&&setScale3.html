@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="kinetic-v5.1.0.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/1.8.0/jquery-1.8.0.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-mousewheel/3.1.13/jquery.mousewheel.js"></script>
+    <style>
+        #draw_div{
+            width: 100%;
+            height: 1080px;
+        }
+    </style>
+</head>
+<body>
+<div class="dcview" id="draw_div"></div>
+<script>
+    window.onload = function () {
+        let clientW = $('.dcview').width(),
+            clientH = $('.dcview').height(),
+            scale= clientW/1920;
+
+        //创建舞台
+        var stage = new Kinetic.Stage({
+            container : 'draw_div',
+            width : clientW,
+            height : clientH,
+            draggable : true,
+            // dragBounds: {
+            //     top: 300
+            // }
+        });
+        //创建层
+        var layer = new Kinetic.Layer();
+
+        //创建背景图片
+        var imageObj = new Image();
+        imageObj.src = './bgpic15.svg';
+        imageObj.onload = function() {
+            let image = new Kinetic.Image({
+                    x : 0,
+                    y : 0,
+                    image : imageObj,
+                    width : 1920,
+                    height : 1080,
+                    setZIndex : 1,
+                });
+            layer.add(image).draw();
+        };
+        stage.add(layer);
+
+
+        $(window).resize(function () {
+
+            clientW = $('.dcview').width();
+            $('.dcview>div>canvas').width(clientW);
+            scale = clientW/1920;
+            stage.setScale({
+                x: scale,
+                y: scale
+            })
+            layer.batchDraw();
+        })
+
+
+
+        //按照分辨率缩放
+        let width = stage.getWidth(),
+            height = stage.getHeight();
+
+        // stage.move({
+        //     x: width/2,
+        //     y: height/2
+        // }).setScale({
+        //     x: scale,
+        //     y: scale
+        // }).setOffset({
+        //     x: width/2,
+        //     y: height/2
+        // })
+
+        stage.x(0).y(0).offset({
+            x: 0,
+            y: 0
+        }).scale({
+            x: scale,
+            y: scale
+        })
+        layer.batchDraw();
+
+        console.log(stage,'stage init')
+
+
+        // let scroolX,
+        //     scroolY;
+        // stage.on('mouseup',function (e) {
+        //     console.log(e)
+        //
+        //     scroolX = e.pageX;
+        //     scroolY = e.pageY;
+        //
+        //     let   stageX = stage.getX(),
+        //         stageY = stage.getY()
+        //     stage.x(stageX + scroolX).y(stageY + scroolY)
+        //         .offset({
+        //             x: scroolX,
+        //             y: scroolY
+        //         }).scale({
+        //         x: 2,
+        //         y: 2
+        //     })
+        // })
+
+
+
+        //页面放大和缩小
+        var level = scale;//放大的倍数
+        var Rollercount = 0;//滚轮第几次使用
+        //滚轮
+        $('#draw_div').mousewheel(function(event, delta) {
+
+                console.log(event,delta)
+                let scroolX = event.clientX/scale,
+                    scroolY = event.clientY/scale;
+                 let   stageX = stage.getX(),
+                    stageY = stage.getY()
+                    // offsetX = (stageX + scroolX)/2,
+                    // offsetY = (stageY + scroolY)/2
+                    // offsetX = stageX * (level- 1),
+                    // offsetY = stage * (level- 1)
+                ;
+
+                // console.log('stageX: ' + stageX,'stageY: ' +stageY,'scroolX: '+scroolX,'scroolY: '+scroolY, 'offsetX: '+offsetX,'offsetY: '+offsetY)
+
+                if (delta > 0) {//放大
+                    level = level + 0.1;
+                    if(level){
+
+                        // offsetX = stageX * (level- 1);
+                        // offsetY = stage * (level- 1);
+
+                        stage.x(stageX + scroolX).y(stageY + scroolY)
+                            .offset({
+                                x: scroolX,
+                                y: scroolY
+                            }).scale({
+                            x: level,
+                            y: level
+                        })
+                    }
+
+                    Rollercount++
+                } else {//缩小
+                    if(level <= scale){
+                        stage.x(0).y(0)
+                            .offset({
+                                x: 0,
+                                y: 0
+                            }).scale({
+                            x: scale,
+                            y: scale
+                        })
+                    }
+
+                    if(level > scale){//缩小
+                        level = level - 0.1;
+                        stage.x(stageX + scroolX).y(stageY + scroolY)
+                            .offset({
+                                x: scroolX,
+                                y: scroolY
+                            }).scale({
+                            x: level,
+                            y: level
+                        })
+                    }
+
+                }
+                layer.batchDraw();
+                return false;
+            }
+        );
+
+
+
+        //拖拽事件
+        let dragStatus = false,
+            timer = null;
+        stage.on("dragstart", function (evt) {
+            // 响应代码
+            dragStatus = true;
+            // console.log('dragstart',evt)
+        })
+
+        stage.on("dragmove", function (evt) {
+            // 响应代码
+            // console.log('dragmove',evt)
+
+            // stage.off("dragstart")
+
+            if(dragStatus){
+                if(timer){
+                    clearTimeout(timer)
+                }
+                timer = setTimeout(() => {
+                    stage.on("dragstart")
+                },16)
+            }
+        })
+
+        stage.on("dragend", function (evt) {
+            // 响应代码
+            dragStatus = false;
+            stage.off("dragstart")
+            // console.log('dragend',evt)
+
+            console.log(stage,'stage ')
+        })
+    };
+</script>
+</body>
+</html>
