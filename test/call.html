@@ -9,15 +9,40 @@
     /*
     * call的作用：只改变this，并接着执行原本的方法
     * */
-    var obj = {name:'iceman'};
-    function fn() {
-        console.log(this);
-        console.log(this.name);
-    }
-    fn(); // this --> window
-    // obj.fn(); // Uncaught TypeError: obj.fn is not a function
+    // var obj = {name:'iceman'};
+    // function fn() {
+    //     console.log(this);
+    //     console.log(this.name);
+    // }
+    // fn(); // this --> window
+    // // obj.fn(); // Uncaught TypeError: obj.fn is not a function
 
-    fn.call(obj);// this --> object this.name --> iceman
+    // fn.call(obj);// this --> object this.name --> iceman
+
+    function Parent(name,age,job){
+        if(this instanceof Parent){
+            console.log("Chilren用法 - 正确");
+            this.name=name;
+            this.age=age;
+            this.job=job;
+        }else{
+            console.log("Chilren用法 - 不正确");
+            return new Parent(name,age,job);
+        }
+    }
+    function Chilren(parentName){
+        Parent.call(this,"child","1","null");
+        this.name=parentName;
+    }
+
+    // var target=new Chilren("ooooo");
+    // console.log(target);//{name: "ooooo"}
+    // console.log(target.age);//undefined
+
+    Chilren.prototype = new Parent();//【加上这一行代码，让Chilren的实例可以指到Chilren即可】
+    var target=new Chilren("ooooo");
+    console.log(target);//Chilren {name: "ooooo", age: "1", job: "null"}
+    console.log(target.age);//1
 </script>
 </body>
 </html>
