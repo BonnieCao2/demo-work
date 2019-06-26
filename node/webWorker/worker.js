@@ -1,5 +1,13 @@
 onmessage = function (e) {
-    // while(true){}
-    console.log(e.data);
-    postMessage("2222")
+    let param = null;
+    param = e.data;
+    console.log(e.data,'param');
+
+    var i = 0;
+    while(i< param){
+        i++;
+    }
+
+    self.postMessage('click');
+    self.close();
 };

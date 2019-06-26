@@ -3,17 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <title>webWorker</title>
+    <style>
+        #btn{
+            width: 80px;
+            height: 40px;
+            background-color: aqua;
+        }
+    </style>
 </head>
 <body>
-<script>
-    var worker = new Worker("./worker.js");
-    worker.postMessage("123456");
+    <div id="div">hhhhhhhhhhhh</div>
 
-    worker.onmessage = function (e) {
-        console.log(e.data)
+    <script id="worker" type="app/worker">
+        self.onmessage = function (e) {
+            let param = null;
+            param = e.data;
+            console.log(e.data,'param');
 
-    };
-    // while(true){}
-</script>
+            var i = 0;
+            while(i< param){
+                i++;
+            }
+
+            self.postMessage('click');
+            self.close();
+        };
+    </script>
+
+
+    <script>
+        var elem = document.createElement('button');
+        elem.innerHTML = 'click me';
+        elem.setAttribute('id','btn');//elem.id = 'btn';
+        document.body.appendChild(elem);
+
+        elem.addEventListener('click',function(){
+            var worker_blob = new Blob([document.getElementById("worker").textContent]);
+            var worker = new Worker(window.URL.createObjectURL(worker_blob));
+
+            // var worker = new Worker("./worker.js");//需要服务器
+
+            let param = 10000000000;
+            worker.postMessage(param);
+
+            worker.onmessage = function (e) {
+                console.log(e.data,'result');
+                worker.terminate();
+            };
+        })
+
+        document.querySelector('#div').addEventListener('click',function(){
+            alert('hhh')
+        })
+
+        // while(true){}
+    </script>
 </body>
 </html>
